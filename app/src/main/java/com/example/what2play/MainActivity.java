@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.example.what2play.database.AppDatabase;
-import com.example.what2play.database.DatabaseInitializer;
 import com.example.what2play.database.entities.Artist;
 
 import java.util.List;
@@ -25,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
         text = findViewById(R.id.textView);
 
-        //Create database
+        //Connect to existing database
         AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db").allowMainThreadQueries().build();
-        //Insert test data
-        DatabaseInitializer.populate(db);
-        //Get data from DB
+
+        //Get data
         List<Artist> artists = db.artistDao().getAll();
+
         //Display data
         StringBuilder result = new StringBuilder();
         for (Artist a : artists) {
