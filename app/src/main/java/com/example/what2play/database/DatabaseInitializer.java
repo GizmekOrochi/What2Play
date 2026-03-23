@@ -2,68 +2,140 @@ package com.example.what2play.database;
 
 import com.example.what2play.database.entities.Artist;
 import com.example.what2play.database.entities.Genre;
+import com.example.what2play.database.entities.Mood;
 import com.example.what2play.database.entities.Track;
 import com.example.what2play.database.entities.TrackArtist;
 import com.example.what2play.database.entities.GenreArtist;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DatabaseInitializer {
 
+    // simple struct to hold track info
+    static class TrackData {
+        String trackName;
+        String artistName;
+        String genreName;
+        String moodName;
+        String language;
+
+        TrackData(String track, String artist, String genre, String mood, String lang) {
+            this.trackName = track;
+            this.artistName = artist;
+            this.genreName = genre;
+            this.moodName = mood;
+            this.language = lang;
+        }
+    }
+
+    // main method to fill db
     public static void populate(AppDatabase db) {
 
-        //Clear the data in the table
+        // reset db (only for testing)
         db.clearAllTables();
-        //Reset all the ID in the table REMOVE THIS SHIT BEFORE RETURNING THE PROJECT
         db.getOpenHelper().getWritableDatabase().execSQL("DELETE FROM sqlite_sequence");
 
-        //ARTISTS
-        Artist daftPunk = new Artist();
-        daftPunk.name = "Daft Punk";
-        long daftPunkId = db.artistDao().insert(daftPunk);
+        // sample data
+        TrackData[] data = {
+                new TrackData("One More Time", "Daft Punk", "Electro", "Happy", "EN"),
+                new TrackData("Nightcall", "Kavinsky", "Synthwave", "Dark", "EN")
+        };
 
-        Artist kavinsky = new Artist();
-        kavinsky.name = "Kavinsky";
-        long kavinskyId = db.artistDao().insert(kavinsky);
+        // build base tables
+        Map<String, Integer> artistMap = addArtists(db, data);
+        Map<String, Integer> genreMap = addGenres(db, data);
+        Map<String, Integer> moodMap = addMoods(db, data);
 
-        //GENRES
-        Genre electro = new Genre();
-        electro.name = "Electro";
-        long electroId = db.genreDao().insert(electro);
+        // add tracks and the relations
+        addTracksAndRelations(db, data, artistMap, genreMap, moodMap);
+    }
 
-        Genre synthwave = new Genre();
-        synthwave.name = "Synthwave";
-        long synthwaveId = db.genreDao().insert(synthwave);
+    // insert artists
+    private static Map<String, Integer> addArtists(AppDatabase db, TrackData[] data) {
 
-        //TRACKS
-        Track t1 = new Track();
-        t1.name = "One More Time";
-        t1.language = "EN";
-        long track1Id = db.trackDao().insert(t1);
+        Map<String, Integer> map = new HashMap<>();
 
-        Track t2 = new Track();
-        t2.name = "Nightcall";
-        t2.language = "EN";
-        long track2Id = db.trackDao().insert(t2);
+        for (TrackData d : data) {
+            if (!map.containsKey(d.artistName)) { // avoid duplication
+                Artist a = new Artist();
+                a.name = d.artistName;
+                int id = (int) db.artistDao().insert(a);
+                map.put(d.artistName, id);
+            }
+        }
 
-        //RELATION Track <> Artist
-        TrackArtist ta1 = new TrackArtist();
-        ta1.trackId = (int) track1Id;
-        ta1.artistId = (int) daftPunkId;
-        db.trackArtistDao().insert(ta1);
+        return map;
+    }
 
-        TrackArtist ta2 = new TrackArtist();
-        ta2.trackId = (int) track2Id;
-        ta2.artistId = (int) kavinskyId;
-        db.trackArtistDao().insert(ta2);
+    // insert genres
+    private static Map<String, Integer> addGenres(AppDatabase db, TrackData[] data) {
 
-        //RELATION Genre <> Artist
-        GenreArtist ga1 = new GenreArtist();
-        ga1.genreId = (int) electroId;
-        ga1.artistId = (int) daftPunkId;
-        db.genreArtistDao().insert(ga1);
+        Map<String, Integer> map = new HashMap<>();
 
-        GenreArtist ga2 = new GenreArtist();
-        ga2.genreId = (int) synthwaveId;
-        ga2.artistId = (int) kavinskyId;
-        db.genreArtistDao().insert(ga2);
+        for (TrackData d : data) {
+            if (!map.containsKey(d.genreName)) { // avoid duplication
+                Genre g = new Genre();
+                g.name = d.genreName;
+                int id = (int) db.genreDao().insert(g);
+                map.put(d.genreName, id);
+            }
+        }
+
+        return map;
+    }
+
+    // insert moods
+    private static Map<String, Integer> addMoods(AppDatabase db, TrackData[] data) {
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (TrackData d : data) {
+            if (!map.containsKey(d.moodName)) { // avoid duplication
+                Mood m = new Mood();
+                m.name = d.moodName;
+                int id = (int) db.moodDao().insert(m);
+                map.put(d.moodName, id);
+            }
+        }
+
+        return map;
+    }
+
+    // insert tracks and link tables
+    private static void addTracksAndRelations(
+            AppDatabase db,
+            TrackData[] data,
+            Map<String, Integer> artistMap,
+            Map<String, Integer> genreMap,
+            Map<String, Integer> moodMap
+    ) {
+
+        for (TrackData d : data) {
+
+            // create track
+            Track t = new Track();
+            t.name = d.trackName;
+            t.language = d.language;
+
+            int trackId = (int) db.trackDao().insert(t);
+
+            // get ids from maps
+            int artistId = artistMap.get(d.artistName);
+            int genreId = genreMap.get(d.genreName);
+            int moodId = moodMap.get(d.moodName);
+
+            // link track <-> artist
+            TrackArtist ta = new TrackArtist();
+            ta.trackId = trackId;
+            ta.artistId = artistId;
+            db.trackArtistDao().insert(ta);
+
+            // link genre <-> artist
+            GenreArtist ga = new GenreArtist();
+            ga.genreId = genreId;
+            ga.artistId = artistId;
+            db.genreArtistDao().insert(ga);
+        }
     }
 }
