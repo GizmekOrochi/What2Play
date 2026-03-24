@@ -1,20 +1,15 @@
 package com.example.what2play;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
-
-import com.example.what2play.database.AppDatabase;
-import com.example.what2play.database.entities.Artist;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView text;
+    Button startButton, addButton, settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +17,26 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        text = findViewById(R.id.textView);
+        startButton = findViewById(R.id.startButton);
+        addButton = findViewById(R.id.addButton);
+        settingsButton = findViewById(R.id.settingsButton);
 
-        //Connect to existing database
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db").allowMainThreadQueries().build();
+        // Start Activity
+        startButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(intent);
+        });
 
-        //Get data
-        List<Artist> artists = db.artistDao().getAll();
+        // Add Song Activity
+        addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, AddSongActivity.class);
+            startActivity(intent);
+        });
 
-        //Display data
-        StringBuilder result = new StringBuilder();
-        for (Artist a : artists) {
-            result.append(a.id).append(" - ").append(a.name).append("\n");
-        }
-
-        text.setText(result.toString());
+        // Settings Activity
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
     }
 }
