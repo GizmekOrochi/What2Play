@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="go_to_add_artist">Ajouter un Artiste</string>
+    <string name="go_to_add_song">Ajoute une musique</string>
+    <string name="loading_database">chargement des ressources...</string>
+    <string name="start">Commencer</string>
+    <string name="settings">Paramettre</string>
+</resources>

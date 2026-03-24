@@ -1,10 +1,8 @@
 <resources>
-    <string name="app_name">What2Play</string>
-    <string name="go_to_add_artist">Go to Add Artist</string>
-    <string name="go_to_add_song">Go to Add Song</string>
-    <string name="what2play">What2Play</string>
+    <string name="app_name" translatable="false">What2Play</string>
+    <string name="go_to_add_artist">Add Artist</string>
+    <string name="go_to_add_song">Add Song</string>
     <string name="loading_database">Loading database...</string>
     <string name="start">Start</string>
-    <string name="add_song">Add Song</string>
     <string name="settings">Settings</string>
 </resources>
