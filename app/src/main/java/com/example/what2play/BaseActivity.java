@@ -12,16 +12,18 @@ import java.util.Locale;
 //This class is used a mother class for activities to apply a new local each time an activity is created
 public class BaseActivity extends AppCompatActivity {
 
+    private static final String TAG = "Settings";
+
     @Override
     protected void attachBaseContext(Context newBase) {
-        SharedPreferences prefs = newBase.getSharedPreferences("Settings", MODE_PRIVATE);
+        SharedPreferences prefs = newBase.getSharedPreferences(TAG, MODE_PRIVATE);
 
         //Get selected language and create new local
         String lang = prefs.getString("lang", "en");
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
 
-        Log.d("BaseActivity", "New local with language: " + lang);
+        Log.d(TAG, "New local with language: " + lang);
 
         Configuration config = new Configuration();
         config.setLocale(locale);

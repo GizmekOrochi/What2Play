@@ -11,12 +11,14 @@ public class SettingsActivity extends BaseActivity {
 
     private String selectedLang;
 
+    private static final String TAG = "SettingsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        Log.d("SettingsActivity", "onCreate");
+        Log.d(TAG, "onCreate");
 
         ImageView flagEnglish = findViewById(R.id.flagEnglish);
         ImageView flagFrench = findViewById(R.id.flagFrench);
@@ -27,7 +29,7 @@ public class SettingsActivity extends BaseActivity {
         SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
         selectedLang = prefs.getString("lang", "en");
 
-        Log.d("SettingsActivity", "Loaded language: " + selectedLang);
+        Log.d(TAG, "Loaded language: " + selectedLang);
 
         //Apply UI manually
         if (selectedLang.equals("fr")) {
@@ -41,7 +43,7 @@ public class SettingsActivity extends BaseActivity {
         // English click
         flagEnglish.setOnClickListener(v -> {
             selectedLang = "en";
-            Log.d("SettingsActivity", "English selected");
+            Log.d(TAG, "English selected");
 
             flagEnglish.setAlpha(1f);
             flagFrench.setAlpha(0.5f);
@@ -50,7 +52,7 @@ public class SettingsActivity extends BaseActivity {
         // French click
         flagFrench.setOnClickListener(v -> {
             selectedLang = "fr";
-            Log.d("SettingsActivity", "French selected");
+            Log.d(TAG, "French selected");
 
             flagFrench.setAlpha(1f);
             flagEnglish.setAlpha(0.5f);
@@ -58,11 +60,11 @@ public class SettingsActivity extends BaseActivity {
 
         // Apply button
         btnApply.setOnClickListener(v -> {
-            Log.d("SettingsActivity", "Apply clicked with the language: " + selectedLang);
+            Log.d(TAG, "Apply clicked with the language: " + selectedLang);
 
             prefs.edit().putString("lang", selectedLang).apply();
 
-            Log.d("SettingsActivity", "Language has been saved");
+            Log.d(TAG, "Language has been saved");
 
             // Restart app
             Intent intent = new Intent(this, MainActivity.class);
@@ -72,7 +74,7 @@ public class SettingsActivity extends BaseActivity {
 
         // Back button
         btnBack.setOnClickListener(v -> {
-            Log.d("SettingsActivity", "Back has been pressed");
+            Log.d(TAG, "Back has been pressed");
             finish();
         });
     }
