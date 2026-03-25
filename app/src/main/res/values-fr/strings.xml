@@ -5,4 +5,9 @@
     <string name="loading_database">chargement des ressources...</string>
     <string name="start">Commencer</string>
     <string name="settings">Paramettre</string>
+    <string name="english">Anglais</string>
+    <string name="French">Français</string>
+    <string name="langue">Langue</string>
+    <string name="apply">Appliquer</string>
+    <string name="back">retour</string>
 </resources>

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-public class AddArtistActivity extends AppCompatActivity {
+public class AddArtistActivity extends BaseActivity {
 
     Button goToSongButton;
 
@@ -17,9 +15,7 @@ public class AddArtistActivity extends AppCompatActivity {
 
         goToSongButton = findViewById(R.id.goToSongButton);
 
-        goToSongButton.setOnClickListener(v -> {
-            Intent intent = new Intent(AddArtistActivity.this, AddSongActivity.class);
-            startActivity(intent);
-        });
+        goToSongButton.setOnClickListener(v ->
+                startActivity(new Intent(this, AddSongActivity.class)));
     }
 }
