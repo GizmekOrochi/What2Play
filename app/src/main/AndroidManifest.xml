@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.What2Play">
+
         <activity
             android:name=".activity_genrequestion"
             android:exported="false" />
@@ -27,6 +28,12 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" /> <!-- LoadingActivity (launcher) -->
+
+        <activity android:name=".StartActivity" />
+        <activity android:name=".AddSongActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AddArtistActivity" />
+
         <activity
             android:name=".LoadingActivity"
             android:exported="true">

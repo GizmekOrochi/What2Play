@@ -1,20 +1,14 @@
 package com.example.what2play;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
-import com.example.what2play.database.AppDatabase;
-import com.example.what2play.database.entities.Artist;
+public class MainActivity extends BaseActivity {
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
-
-    TextView text;
+    Button startButton, addButton, settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,20 +16,17 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        text = findViewById(R.id.textView);
+        startButton = findViewById(R.id.startButton);
+        addButton = findViewById(R.id.addButton);
+        settingsButton = findViewById(R.id.settingsButton);
 
-        //Connect to existing database
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db").allowMainThreadQueries().build();
+        startButton.setOnClickListener(v ->
+                startActivity(new Intent(this, StartActivity.class)));
 
-        //Get data
-        List<Artist> artists = db.artistDao().getAll();
+        addButton.setOnClickListener(v ->
+                startActivity(new Intent(this, AddSongActivity.class)));
 
-        //Display data
-        StringBuilder result = new StringBuilder();
-        for (Artist a : artists) {
-            result.append(a.id).append(" - ").append(a.name).append("\n");
-        }
-
-        text.setText(result.toString());
+        settingsButton.setOnClickListener(v ->
+                startActivity(new Intent(this, SettingsActivity.class)));
     }
 }
