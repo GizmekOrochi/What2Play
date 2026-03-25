@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
+//This class is used a mother class for activities to apply a new local each time an activity is created
 public class BaseActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +21,7 @@ public class BaseActivity extends AppCompatActivity {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
 
-        Log.d("BaseActivity", "New local with langage: " + lang);
+        Log.d("BaseActivity", "New local with language: " + lang);
 
         Configuration config = new Configuration();
         config.setLocale(locale);
