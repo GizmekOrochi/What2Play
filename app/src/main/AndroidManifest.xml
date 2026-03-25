@@ -11,22 +11,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.What2Play">
-
-        <!-- MainActivity (NO launcher) -->
+        <activity
+            android:name=".activity_genrequestion"
+            android:exported="false" />
+        <activity
+            android:name=".activity_check"
+            android:exported="false" />
+        <activity
+            android:name=".activity_list"
+            android:exported="false" />
+        <activity
+            android:name=".activity_slider"
+            android:exported="false"
+            android:theme="@style/Theme.What2Play" /> <!-- MainActivity (NO launcher) -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
-        <!-- LoadingActivity (launcher) -->
+            android:exported="false" /> <!-- LoadingActivity (launcher) -->
         <activity
             android:name=".LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
