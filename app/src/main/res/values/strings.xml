@@ -10,4 +10,9 @@
     <string name="langue">Language</string>
     <string name="apply">Apply</string>
     <string name="back">back</string>
+    <string name="gender">Gender</string>
+    <string name="artist">Artist</string>
+    <string name="name">Name</string>
+    <string name="song_name">Song Name</string>
+    <string name="song_link">Song Link</string>
 </resources>
