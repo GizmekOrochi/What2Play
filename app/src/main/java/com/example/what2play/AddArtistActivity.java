@@ -3,9 +3,12 @@ package com.example.what2play;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.example.what2play.database.AppDatabase;
@@ -30,32 +33,37 @@ public class AddArtistActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_artist);
-
-        // init UI
+        Button backButton = findViewById(R.id.button);
         Button goToSongButton = findViewById(R.id.goToSongButton);
         Button addButton = findViewById(R.id.button2);
         artistInput = findViewById(R.id.editTextText);
         spinner = findViewById(R.id.spinner);
 
-        // init database
+        //init database
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db").allowMainThreadQueries().build();
 
         Log.d(TAG, "Database initialized");
 
-        // load genres into spinner
+        //load genres into spinner
         loadGenres();
 
-        // add artist button
+        //return to the main menu
+        backButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
+
+        //add artist button
         addButton.setOnClickListener(v -> addArtist());
 
-        // go to next screen
+        //go to next screen
         goToSongButton.setOnClickListener(v -> {
             Log.d(TAG, "Going to AddSongActivity");
             startActivity(new Intent(this, AddSongActivity.class));
         });
     }
 
-    // load genres and display them in spinner
+    //load genres and display them in spinner
     private void loadGenres() {
         genres = db.genreDao().getAll();
 
@@ -86,12 +94,12 @@ public class AddArtistActivity extends BaseActivity {
             return;
         }
 
-        // get selected genre
+        //get selected genre
         Genre selectedGenre = genres.get(spinner.getSelectedItemPosition());
 
         Log.d(TAG, "Adding artist: " + artistName + " (genre: " + selectedGenre.name + ")");
 
-        // check if artist already exists
+        //check if artist already exists
         List<Artist> allArtists = db.artistDao().getAll();
 
         for (Artist a : allArtists) {
@@ -102,7 +110,7 @@ public class AddArtistActivity extends BaseActivity {
             }
         }
 
-        // insert artist
+        //insert artist
         Artist artist = new Artist();
         artist.name = artistName;
 

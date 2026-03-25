@@ -39,6 +39,7 @@ public class AddSongActivity extends BaseActivity {
         artistSpinner = findViewById(R.id.spinner2);
         songNameInput = findViewById(R.id.editTextText);
         linkInput = findViewById(R.id.editTextText2);
+        Button backButton = findViewById(R.id.button);
         Button addButton = findViewById(R.id.button2);
         Button goToArtistButton = findViewById(R.id.goToArtistButton);
 
@@ -60,6 +61,12 @@ public class AddSongActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        //return to menu
+        backButton.setOnClickListener(v -> {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
         });
 
         //add song button
