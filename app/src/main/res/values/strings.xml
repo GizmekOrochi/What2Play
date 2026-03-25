@@ -15,4 +15,5 @@
     <string name="name">Name</string>
     <string name="song_name">Song Name</string>
     <string name="song_link">Song Link</string>
+    <string name="artist_name">Artist Name</string>
 </resources>

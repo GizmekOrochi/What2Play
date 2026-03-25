@@ -24,6 +24,9 @@ public interface ArtistDao {
     @Query("SELECT * FROM artists WHERE id = :id")
     Artist getById(int id);
 
+    @Query("SELECT * FROM artists WHERE LOWER(name) = LOWER(:name) LIMIT 1")
+    Artist findByName(String name);
+
     @Query("DELETE FROM artists")
     void clear();
 }
