@@ -21,7 +21,7 @@ public class MainActivity extends BaseActivity {
         settingsButton = findViewById(R.id.settingsButton);
 
         startButton.setOnClickListener(v ->
-                startActivity(new Intent(this, StartActivity.class)));
+                startActivity(new Intent(this, ListenActivity.class)));
 
         addButton.setOnClickListener(v ->
                 startActivity(new Intent(this, AddSongActivity.class)));
