@@ -2,8 +2,7 @@ package com.example.what2play.database;
 
 public class MusicData {
 
-    // ===== BASIC STRUCTS =====
-
+    //Mood structs
     public static class MoodData {
         public String name;
 
@@ -12,6 +11,7 @@ public class MusicData {
         }
     }
 
+    //Genre struct
     public static class GenreData {
         public String name;
 
@@ -20,6 +20,7 @@ public class MusicData {
         }
     }
 
+    //Artist struct
     public static class ArtistData {
         public String name;
 
@@ -28,8 +29,7 @@ public class MusicData {
         }
     }
 
-    // ===== TRACK STRUCT =====
-
+    //Track truck
     public static class TrackData {
         public String name;
         public String artist;
@@ -46,8 +46,7 @@ public class MusicData {
         }
     }
 
-    // ===== RELATION STRUCTS =====
-
+    //Relation structs
     public static class GenreMoodData {
         public String genre;
         public String mood;
@@ -68,8 +67,7 @@ public class MusicData {
         }
     }
 
-    //Hardcored Data
-
+    //Default data
     public static MoodData[] MOODS = {
             new MoodData("Happy"),
             new MoodData("Dark")
