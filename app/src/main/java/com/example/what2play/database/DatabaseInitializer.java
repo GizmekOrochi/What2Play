@@ -7,8 +7,7 @@ import java.util.Map;
 
 public class DatabaseInitializer {
 
-    public static void populate(AppDatabase db) {
-
+    public static void initiate(AppDatabase db) {
         db.clearAllTables();
         db.getOpenHelper().getWritableDatabase().execSQL("DELETE FROM sqlite_sequence");
 
@@ -24,9 +23,7 @@ public class DatabaseInitializer {
 
     //MOODS
     private static Map<String, Integer> addMoods(AppDatabase db) {
-
         Map<String, Integer> map = new HashMap<>();
-
         for (MusicData.MoodData m : MusicData.MOODS) {
             Mood mood = new Mood();
             mood.name = m.name;
@@ -39,9 +36,7 @@ public class DatabaseInitializer {
 
     //GENRES
     private static Map<String, Integer> addGenres(AppDatabase db) {
-
         Map<String, Integer> map = new HashMap<>();
-
         for (MusicData.GenreData g : MusicData.GENRES) {
             Genre genre = new Genre();
             genre.name = g.name;
@@ -54,9 +49,7 @@ public class DatabaseInitializer {
 
     //ARTISTS
     private static Map<String, Integer> addArtists(AppDatabase db) {
-
         Map<String, Integer> map = new HashMap<>();
-
         for (MusicData.ArtistData a : MusicData.ARTISTS) {
             Artist artist = new Artist();
             artist.name = a.name;
@@ -68,12 +61,7 @@ public class DatabaseInitializer {
     }
 
     //GENRE <> MOOD
-    private static void linkGenreMood(
-            AppDatabase db,
-            Map<String, Integer> genreMap,
-            Map<String, Integer> moodMap
-    ) {
-
+    private static void linkGenreMood(AppDatabase db, Map<String, Integer> genreMap, Map<String, Integer> moodMap) {
         for (MusicData.GenreMoodData gm : MusicData.GENRE_MOOD) {
             GenreMood rel = new GenreMood();
             rel.genreId = genreMap.get(gm.genre);
@@ -83,12 +71,7 @@ public class DatabaseInitializer {
     }
 
     //ARTIST <> GENRE
-    private static void linkArtistGenre(
-            AppDatabase db,
-            Map<String, Integer> artistMap,
-            Map<String, Integer> genreMap
-    ) {
-
+    private static void linkArtistGenre(AppDatabase db, Map<String, Integer> artistMap, Map<String, Integer> genreMap) {
         for (MusicData.ArtistGenreData ag : MusicData.ARTIST_GENRE) {
             GenreArtist rel = new GenreArtist();
             rel.artistId = artistMap.get(ag.artist);
@@ -98,16 +81,12 @@ public class DatabaseInitializer {
     }
 
     //TRACKS
-    private static void addTracks(
-            AppDatabase db,
-            Map<String, Integer> artistMap
-    ) {
-
+    //TRACKS
+    private static void addTracks(AppDatabase db, Map<String, Integer> artistMap) {
         for (MusicData.TrackData tData : MusicData.TRACKS) {
-
             Track t = new Track();
             t.name = tData.name;
-            t.language = tData.language;
+            t.link = tData.link;
 
             int trackId = (int) db.trackDao().insert(t);
 

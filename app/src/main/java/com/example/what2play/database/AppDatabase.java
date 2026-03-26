@@ -29,10 +29,9 @@ import com.example.what2play.database.entities.TrackArtist;
                 Track.class,
                 TrackArtist.class
         },
-        version = 1
+        version = 2
 )
 public abstract class AppDatabase extends RoomDatabase {
-
     public abstract ArtistDao artistDao();
     public abstract GenreDao genreDao();
     public abstract GenreArtistDao genreArtistDao();

@@ -11,8 +11,4 @@ public class Track {
 
     public String name;
     public String link;
-    public int liked_score;
-    public String release_date;
-    public boolean instrumental;
-    public String language;
 }
