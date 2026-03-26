@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,7 +14,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.What2Play">
         <activity
+            android:name=".EmojiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ListenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity_genrequestion"
+            android:exported="false" />
+        <activity
+            android:name=".activity_check"
+            android:exported="false" />
+        <activity
+            android:name=".activity_list"
+            android:exported="false" />
+        <activity
+            android:name=".activity_slider"
+            android:exported="false"
+            android:theme="@style/Theme.What2Play" /> <!-- MainActivity (NO launcher) -->
+        <activity
             android:name=".MainActivity"
+            android:exported="false" /> <!-- LoadingActivity (launcher) -->
+        <activity android:name=".StartActivity" />
+        <activity android:name=".AddSongActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".AddArtistActivity" />
+        <activity
+            android:name=".LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

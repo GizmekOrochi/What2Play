@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="go_to_add_artist">Ajouter un Artiste</string>
+    <string name="go_to_add_song">Ajouter une musique</string>
+    <string name="loading_database">Chargement des ressources...</string>
+    <string name="start">Commencer</string>
+    <string name="settings">Paramètres</string>
+    <string name="english">Anglais</string>
+    <string name="French">Français</string>
+    <string name="langue">Langue</string>
+    <string name="apply">Appliquer</string>
+    <string name="back">Retour</string>
+    <string name="gender">Genre</string>
+    <string name="artist">Artiste</string>
+    <string name="name">Nom</string>
+    <string name="song_name">Nom de la Musique</string>
+    <string name="song_link">Link de la Musique</string>
+    <string name="artist_name">Nom de l\'Artiste</string>
+    <string name="home_button">Menu</string>
+    <string name="previous_buttons">Précédent</string>
+    <string name="listen_question_description">Écoutez les 3 extraits\nEt Choisissez celui que vous aimez le plus.</string>
+    <string name="validate_buttons">Valider</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Précédent</string>
+</resources>

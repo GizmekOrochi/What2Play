@@ -5,22 +5,22 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.what2play.database.entities.Genre;
+import com.example.what2play.database.entities.Mood;
 
 import java.util.List;
 
 @Dao
-public interface GenreDao {
+public interface MoodDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long insert(Genre genre);
+    long insert(Mood mood);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long[] insertAll(Genre... genres);
+    long[] insertAll(Mood... moods);
 
-    @Query("SELECT * FROM genres")
-    List<Genre> getAll();
+    @Query("SELECT * FROM moods")
+    List<Mood> getAll();
 
-    @Query("DELETE FROM genres")
+    @Query("DELETE FROM moods")
     void clear();
 }
