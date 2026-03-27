@@ -67,7 +67,7 @@ public class SpinnerActivity extends BaseActivity {
         Log.d(TAG, "Spinner mode received: " + spinnerMode);
 
         if (spinnerMode == null) {
-            Toast.makeText(this, "Invalid spinner mode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.invalid_spinner_mode), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Spinner mode is null");
             finish();
             return;
@@ -91,7 +91,6 @@ public class SpinnerActivity extends BaseActivity {
         updateSelectionFromSpinner(0);
     }
 
-    @SuppressLint("SetTextI18n")
     private void updateSelectionFromSpinner(int position) {
         Log.d(TAG, "Position selected: " + position);
 
@@ -123,7 +122,7 @@ public class SpinnerActivity extends BaseActivity {
         }
 
         if (genre1 == null || genre2 == null) {
-            Toast.makeText(this, "Genres not found in database", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.genres_not_found_database), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Genre not found in db");
             return;
         }
@@ -136,30 +135,29 @@ public class SpinnerActivity extends BaseActivity {
         String selectedGenre1Name = genre1.name;
         String selectedGenre2Name = genre2.name;
 
-        previewText.setText("Selected genres: " + selectedGenre1Name + " / " + selectedGenre2Name);
+        previewText.setText(getString(R.string.selected_genres_preview, selectedGenre1Name, selectedGenre2Name));
     }
 
-    @SuppressLint("SetTextI18n")
     private void setupSpinnerForMode() {
         Log.d(TAG, "Setting up spinner mode: " + spinnerMode);
 
         String[] options;
 
         if (spinnerMode.equals("live")) {
-            questionTitle.setText("Pick the live scene you would step into");
+            questionTitle.setText(R.string.spinner_question_title);
             options = new String[] {
-                    "Smooth and expressive",
-                    "Powerful and intense"
+                    getString(R.string.spinner_live_option_1),
+                    getString(R.string.spinner_live_option_2)
             };
         } else if (spinnerMode.equals("electro")) {
-            questionTitle.setText("Pick the electronic scene you would step into");
+            questionTitle.setText(R.string.spinner_question_title);
             options = new String[] {
-                    "Energetic, danceable",
-                    "Chill",
-                    "Retro"
+                    getString(R.string.spinner_electro_option_1),
+                    getString(R.string.spinner_electro_option_2),
+                    getString(R.string.spinner_electro_option_3)
             };
         } else {
-            Toast.makeText(this, "Unknown spinner mode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.unknown_spinner_mode), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Unknown spinner mode");
             finish();
             return;
@@ -190,7 +188,7 @@ public class SpinnerActivity extends BaseActivity {
         Log.d(TAG, "validate button clicked");
 
         if (selectedGenre1Id <= 0 || selectedGenre2Id <= 0) {
-            Toast.makeText(this, "No valid genre selection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_valid_genre_selection), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Invalid genre");
             return;
         }
