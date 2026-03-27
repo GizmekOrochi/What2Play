@@ -26,4 +26,13 @@
     <string name="previous_buttons">Previous</string>
     <string name="listen_question_description">Listen to these 3 previews And choose the one you like the most.</string>
     <string name="validate_buttons">Validate</string>
+    <string name="urban_music_title">Urban Music</string>
+    <string name="live_music_title">\"Live\" Music</string>
+    <string name="electronic_instrumental_music_title">Electronic / Instrumental Music</string>
+    <string name="rapimage">RapImage</string>
+    <string name="rap_description" translatable="false">Boom Bap, West Coast, Trap, Cloud Rap</string>
+    <string name="livemusicimage">LiveMusicImage</string>
+    <string name="live_music_description" translatable="false">Rock, Jazz, Metal, Blues</string>
+    <string name="electronicimagedescription">ElectronicImageDescription</string>
+    <string name="electronic_instrumental_description" translatable="false">House, EDM, Lo-Fi, Synthwave</string>
 </resources>

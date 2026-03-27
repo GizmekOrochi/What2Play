@@ -21,7 +21,8 @@ public class MainActivity extends BaseActivity {
         settingsButton = findViewById(R.id.settingsButton);
 
         startButton.setOnClickListener(v ->
-                startActivity(new Intent(this, EmojiActivity.class)));
+                startActivity(new Intent(this, GenreActivity.class)
+                ));
 
         addButton.setOnClickListener(v ->
                 startActivity(new Intent(this, AddSongActivity.class)));

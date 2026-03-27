@@ -14,13 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.What2Play">
         <activity
+            android:name=".SwipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ActivityLink"
+            android:exported="false" />
+        <activity
             android:name=".EmojiActivity"
             android:exported="false" />
         <activity
             android:name=".ListenActivity"
             android:exported="false" />
         <activity
-            android:name=".activity_genrequestion"
+            android:name=".GenreActivity"
             android:exported="false" />
         <activity
             android:name=".activity_check"
@@ -29,7 +35,7 @@
             android:name=".activity_list"
             android:exported="false" />
         <activity
-            android:name=".activity_slider"
+            android:name=".SliderActivity"
             android:exported="false"
             android:theme="@style/Theme.What2Play" /> <!-- MainActivity (NO launcher) -->
         <activity

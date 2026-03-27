@@ -5,13 +5,43 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_slider">
+    tools:context=".SliderActivity">
+
+    <Button
+        android:id="@+id/buttonPrevious4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/previous_buttons"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonHome4"
+        app:layout_constraintEnd_toStartOf="@+id/buttonHome4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonHome4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/home_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonValidate4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/validate_buttons"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonHome4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonHome4" />
 
     <TextView
         android:id="@+id/app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="What2Play"
+        android:text="@string/app_name"
+        android:textSize="24dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,13 +86,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/min_text" />
 
-    <Button
-        android:id="@+id/validate_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
