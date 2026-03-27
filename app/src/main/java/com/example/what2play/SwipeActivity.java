@@ -22,6 +22,7 @@ import com.example.what2play.database.entities.Artist;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SwipeActivity extends BaseActivity {
 
@@ -158,6 +159,9 @@ public class SwipeActivity extends BaseActivity {
 
         ArrayList<Artist> artistsGenre1 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre1Id));
         ArrayList<Artist> artistsGenre2 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre2Id));
+
+        shuffleArtists(artistsGenre1);
+        shuffleArtists(artistsGenre2);
 
         for (Artist artist : artistsGenre1) {
             if (artists.size() < countGenre1 && !artists.contains(artist.name)) {
@@ -296,5 +300,17 @@ public class SwipeActivity extends BaseActivity {
     public void clickValidate6(View view) {
         Log.d(TAG, "validate button clicked");
         validateChoice();
+    }
+
+    private void shuffleArtists(ArrayList<Artist> list) {
+        Random random = new Random();
+
+        for (int i = 0; i < list.size(); i++) {
+            int randomIndex = random.nextInt(list.size());
+
+            Artist temp = list.get(i);
+            list.set(i, list.get(randomIndex));
+            list.set(randomIndex, temp);
+        }
     }
 }
