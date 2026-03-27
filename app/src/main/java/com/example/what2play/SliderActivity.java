@@ -80,7 +80,6 @@ public class SliderActivity extends BaseActivity {
 
         minText.setText(genre1Name);
         maxText.setText(genre2Name);
-        titleQuestion.setText("Choose your mix between the two genres");
 
         seekBar.setMax(6);
         seekBar.setProgress(3);

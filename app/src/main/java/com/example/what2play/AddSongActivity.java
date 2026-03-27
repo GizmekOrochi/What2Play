@@ -72,21 +72,6 @@ public class AddSongActivity extends BaseActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
-
-        //return to menu
-        backButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-
-        //add song button
-        addButton.setOnClickListener(v -> addSong());
-
-        //Going to AddSongActivity activity
-        goToArtistButton.setOnClickListener(v -> {
-            Log.d(TAG, "Navigating to AddArtistActivity");
-            startActivity(new Intent(this, AddArtistActivity.class));
-        });
     }
 
     //load genres into spinner
@@ -160,5 +145,19 @@ public class AddSongActivity extends BaseActivity {
         //clear inputs
         songNameInput.setText("");
         linkInput.setText("");
+    }
+
+    public void clickBackAddSong(View view) {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    public void clickAddSong(View view) {
+        addSong();
+    }
+
+    public void clickGoToArtist(View view) {
+        Log.d(TAG, "Navigating to AddArtistActivity");
+        startActivity(new Intent(this, AddArtistActivity.class));
     }
 }
