@@ -1,6 +1,12 @@
 package com.example.what2play.database;
 
-import com.example.what2play.database.entities.*;
+import com.example.what2play.database.entities.Artist;
+import com.example.what2play.database.entities.Genre;
+import com.example.what2play.database.entities.GenreArtist;
+import com.example.what2play.database.entities.GenreMood;
+import com.example.what2play.database.entities.Mood;
+import com.example.what2play.database.entities.Track;
+import com.example.what2play.database.entities.TrackArtist;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,21 +14,35 @@ import java.util.Map;
 public class DatabaseInitializer {
 
     public static void initiate(AppDatabase db) {
-        if (db.moodDao().count() > 0) {
-            return;
-        }
+        db.runInTransaction(() -> {
+            boolean dbComplete =
+                    db.genreDao().count() == MusicData.GENRES.length &&
+                            db.moodDao().count() == MusicData.MOODS.length &&
+                            db.artistDao().getAll().size() == MusicData.ARTISTS.length &&
+                            db.trackDao().getAll().size() == MusicData.TRACKS.length;
 
-        Map<String, Integer> moodMap = addMoods(db);
-        Map<String, Integer> genreMap = addGenres(db);
-        Map<String, Integer> artistMap = addArtists(db);
+            if (dbComplete) {
+                return;
+            }
 
-        linkGenreMood(db, genreMap, moodMap);
-        linkArtistGenre(db, artistMap, genreMap);
+            db.trackArtistDao().clear();
+            db.trackDao().clear();
+            db.genreArtistDao().clear();
+            db.genreMoodDao().clear();
+            db.artistDao().clear();
+            db.genreDao().clear();
+            db.moodDao().clear();
 
-        addTracks(db, artistMap);
+            Map<String, Integer> moodMap = addMoods(db);
+            Map<String, Integer> genreMap = addGenres(db);
+            Map<String, Integer> artistMap = addArtists(db);
+
+            linkGenreMood(db, genreMap, moodMap);
+            linkArtistGenre(db, artistMap, genreMap);
+            addTracks(db, artistMap);
+        });
     }
 
-    //Mood initialistation
     private static Map<String, Integer> addMoods(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.MoodData m : MusicData.MOODS) {
@@ -31,11 +51,9 @@ public class DatabaseInitializer {
             int id = (int) db.moodDao().insert(mood);
             map.put(m.name, id);
         }
-
         return map;
     }
 
-    //Genre initialistation
     private static Map<String, Integer> addGenres(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.GenreData g : MusicData.GENRES) {
@@ -44,11 +62,9 @@ public class DatabaseInitializer {
             int id = (int) db.genreDao().insert(genre);
             map.put(g.name, id);
         }
-
         return map;
     }
 
-    //Artists initialistation
     private static Map<String, Integer> addArtists(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.ArtistData a : MusicData.ARTISTS) {
@@ -57,11 +73,9 @@ public class DatabaseInitializer {
             int id = (int) db.artistDao().insert(artist);
             map.put(a.name, id);
         }
-
         return map;
     }
 
-    //Relations initialistation
     private static void linkGenreMood(AppDatabase db, Map<String, Integer> genreMap, Map<String, Integer> moodMap) {
         for (MusicData.GenreMoodData gm : MusicData.GENRE_MOOD) {
             GenreMood rel = new GenreMood();
@@ -80,7 +94,6 @@ public class DatabaseInitializer {
         }
     }
 
-    //Track initialistation
     private static void addTracks(AppDatabase db, Map<String, Integer> artistMap) {
         for (MusicData.TrackData tData : MusicData.TRACKS) {
             Track t = new Track();
