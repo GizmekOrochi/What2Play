@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,8 +18,6 @@ public class SettingsActivity extends BaseActivity {
 
     private ImageView flagEnglish;
     private ImageView flagFrench;
-    private Button btnBack;
-    private Button btnApply;
     private static final String TAG = "SettingsActivity";
 
     @Override
@@ -38,8 +35,8 @@ public class SettingsActivity extends BaseActivity {
 
         flagEnglish = findViewById(R.id.flagEnglish);
         flagFrench = findViewById(R.id.flagFrench);
-        btnBack = findViewById(R.id.btnBack);
-        btnApply = findViewById(R.id.btnApply);
+        findViewById(R.id.btnBack);
+        findViewById(R.id.btnApply);
 
         //Load saved language
         SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);

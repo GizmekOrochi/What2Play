@@ -3,6 +3,7 @@ package com.example.what2play;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,9 +25,9 @@ import java.util.ArrayList;
 
 public class SwipeActivity extends BaseActivity {
 
-    private TextView titleText;
-    private TextView artistNameText;
+    private static final String TAG = "SwipeActivity";
 
+    private TextView artistNameText;
     private ProgressBar artistProgress;
     private MaterialCardView artistCard;
 
@@ -57,9 +59,11 @@ public class SwipeActivity extends BaseActivity {
     private long bestArtist3Time = Long.MAX_VALUE;
 
     private static final float SWIPE_THRESHOLD = 150f;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_swipe);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -68,8 +72,7 @@ public class SwipeActivity extends BaseActivity {
             return insets;
         });
 
-
-        titleText = findViewById(R.id.titleText);
+        TextView titleText = findViewById(R.id.titleText);
         artistNameText = findViewById(R.id.artistNameText);
         artistProgress = findViewById(R.id.artistProgress);
         artistCard = findViewById(R.id.artistCard);
@@ -83,6 +86,8 @@ public class SwipeActivity extends BaseActivity {
                 "what2play-db"
         ).allowMainThreadQueries().build();
 
+        Log.d(TAG, "Database initialized");
+
         Intent intent = getIntent();
 
         genre1Id = intent.getIntExtra("genre1_id", -1);
@@ -94,7 +99,11 @@ public class SwipeActivity extends BaseActivity {
         genre1Weight = intent.getIntExtra("genre1_weight", 3);
         genre2Weight = intent.getIntExtra("genre2_weight", 3);
 
+        Log.d(TAG, "Received genres: " + genre1Name + " / " + genre2Name);
+        Log.d(TAG, "Weights: " + genre1Weight + " / " + genre2Weight);
+
         if (genre1Id == -1 || genre2Id == -1) {
+            Log.e(TAG, "Invalid genre IDs");
             finish();
             return;
         }
@@ -106,10 +115,11 @@ public class SwipeActivity extends BaseActivity {
 
         loadArtists();
 
+        Log.d(TAG, "Artists loaded: " + artists.size());
+
         artistProgress.setMax(artists.size());
         buttonValidate.setEnabled(false);
         buttonValidate.setAlpha(0.5f);
-
 
         artistCard.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -121,8 +131,10 @@ public class SwipeActivity extends BaseActivity {
                 float endX = event.getRawX();
 
                 if (endX - startX > SWIPE_THRESHOLD) {
+                    Log.d(TAG, "Swipe right");
                     handleYesSwipe();
                 } else if (startX - endX > SWIPE_THRESHOLD) {
+                    Log.d(TAG, "Swipe left");
                     handleNoSwipe();
                 }
 
@@ -134,60 +146,61 @@ public class SwipeActivity extends BaseActivity {
 
         displayCurrentArtist();
     }
-        private void loadArtists() {
-            artists.clear();
 
-            int totalWeight = genre1Weight + genre2Weight;
-            if (totalWeight <= 0) totalWeight = 1;
+    private void loadArtists() {
+        artists.clear();
 
-            int countGenre1 = (6 * genre1Weight) / (genre1Weight + genre2Weight);
-            int countGenre2 = 6 - countGenre1;
+        int totalWeight = genre1Weight + genre2Weight;
+        if (totalWeight <= 0) totalWeight = 1;
 
-            ArrayList<Artist> artistsGenre1 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre1Id));
-            ArrayList<Artist> artistsGenre2 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre2Id));
+        int countGenre1 = (6 * genre1Weight) / totalWeight;
+        int countGenre2 = 6 - countGenre1;
 
-            for (Artist artist : artistsGenre1) {
-                if (artists.size() < countGenre1) {
-                    if (!artists.contains(artist.name)) {
-                        artists.add(artist.name);
-                    }
-                }
-            }
+        ArrayList<Artist> artistsGenre1 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre1Id));
+        ArrayList<Artist> artistsGenre2 = new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genre2Id));
 
-            int currentGenre2Count = 0;
-            for (Artist artist : artistsGenre2) {
-                if (currentGenre2Count < countGenre2) {
-                    if (!artists.contains(artist.name)) {
-                        artists.add(artist.name);
-                        currentGenre2Count++;
-                    }
-                }
-            }
-
-            while (artists.size() > 6) {
-                artists.remove(artists.size() - 1);
+        for (Artist artist : artistsGenre1) {
+            if (artists.size() < countGenre1 && !artists.contains(artist.name)) {
+                artists.add(artist.name);
             }
         }
 
-        private void displayCurrentArtist() {
-            if (currentArtistIndex < 0) {
-                currentArtistIndex = 0;
+        int currentGenre2Count = 0;
+        for (Artist artist : artistsGenre2) {
+            if (currentGenre2Count < countGenre2 && !artists.contains(artist.name)) {
+                artists.add(artist.name);
+                currentGenre2Count++;
             }
-
-            if (currentArtistIndex >= artists.size()) {
-                artistNameText.setText(R.string.finished);
-                artistProgress.setProgress(artists.size());
-                buttonValidate.setEnabled(true);
-                buttonValidate.setAlpha(1f);
-                return;
-            }
-
-            artistNameText.setText(artists.get(currentArtistIndex));
-            artistProgress.setProgress(currentArtistIndex + 1);
-            currentArtistStartTimeMs = SystemClock.elapsedRealtime();
         }
+
+        while (artists.size() > 6) {
+            artists.remove(artists.size() - 1);
+        }
+    }
+
+    private void displayCurrentArtist() {
+        if (currentArtistIndex < 0) currentArtistIndex = 0;
+
+        if (currentArtistIndex >= artists.size()) {
+            Log.d(TAG, "All artists processed");
+            artistNameText.setText(R.string.finished);
+            artistProgress.setProgress(artists.size());
+            buttonValidate.setEnabled(true);
+            buttonValidate.setAlpha(1f);
+            return;
+        }
+
+        String artist = artists.get(currentArtistIndex);
+        Log.d(TAG, "Displaying artist");
+
+        artistNameText.setText(artist);
+        artistProgress.setProgress(currentArtistIndex + 1);
+        currentArtistStartTimeMs = SystemClock.elapsedRealtime();
+    }
 
     private void addAcceptedArtist(String name, long reactionTimeMs) {
+        Log.d(TAG, "Accepted artist");
+
         if (reactionTimeMs < bestArtist1Time) {
             bestArtist3Name = bestArtist2Name;
             bestArtist3Time = bestArtist2Time;
@@ -217,43 +230,28 @@ public class SwipeActivity extends BaseActivity {
 
         addAcceptedArtist(currentArtist, reactionTimeMs);
 
+        currentArtistIndex++;
+        displayCurrentArtist();
+    }
+
+    private void handleNoSwipe() {
+        if (currentArtistIndex >= artists.size()) return;
+
+        String currentArtist = artists.get(currentArtistIndex);
+        Log.d(TAG, "Rejected artist");
 
         currentArtistIndex++;
         displayCurrentArtist();
     }
 
-        private void handleNoSwipe() {
-            if (currentArtistIndex >= artists.size()) return;
-
-            String currentArtist = artists.get(currentArtistIndex);
-
-
-            currentArtistIndex++;
-            displayCurrentArtist();
-        }
-
     private void validateChoice() {
         if (currentArtistIndex < artists.size()) {
+            Log.d(TAG, "Validation blocked: not finished");
             return;
         }
 
-        ArrayList<String> selectedArtists = new ArrayList<>();
-
-        if (bestArtist1Name == null) {
-            if (!artists.isEmpty()) {
-                selectedArtists.add(artists.get(artists.size() - 1));
-            }
-        } else {
-            selectedArtists.add(bestArtist1Name);
-
-            if (bestArtist2Name != null) {
-                selectedArtists.add(bestArtist2Name);
-            }
-
-            if (bestArtist3Name != null) {
-                selectedArtists.add(bestArtist3Name);
-            }
-        }
+        ArrayList<String> selectedArtists = getStrings();
+        Log.d(TAG, "Selected artists");
 
         Intent intent = new Intent(SwipeActivity.this, ListenActivity.class);
         intent.putStringArrayListExtra("selected_artists", selectedArtists);
@@ -264,17 +262,39 @@ public class SwipeActivity extends BaseActivity {
 
         startActivity(intent);
     }
+
+    @NonNull
+    private ArrayList<String> getStrings() {
+        ArrayList<String> selectedArtists = new ArrayList<>();
+
+        if (bestArtist1Name == null) {
+            if (!artists.isEmpty()) {
+                selectedArtists.add(artists.get(artists.size() - 1));
+            }
+        } else {
+            selectedArtists.add(bestArtist1Name);
+
+            if (bestArtist2Name != null) selectedArtists.add(bestArtist2Name);
+            if (bestArtist3Name != null) selectedArtists.add(bestArtist3Name);
+        }
+
+        return selectedArtists;
+    }
+
     public void clickPrevious6(View view) {
+        Log.d(TAG, "previous button clicked");
         finish();
     }
 
     public void clickHome6(View view) {
+        Log.d(TAG, "home button clicked");
         Intent intent = new Intent(SwipeActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
     public void clickValidate6(View view) {
+        Log.d(TAG, "validate button clicked");
         validateChoice();
     }
 }
