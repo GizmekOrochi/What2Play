@@ -1,5 +1,6 @@
 package com.example.what2play;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,17 +27,12 @@ import java.util.Random;
 
 public class ListenActivity extends BaseActivity {
 
-    private WebView webView1, webView2, webView3;
     private Button buttonChoice1, buttonChoice2, buttonChoice3;
-
-    private Button buttonHome, buttonPrevious;
 
 
     private AppDatabase db;
 
     private final ArrayList<Track> previewTracks = new ArrayList<>();
-    private int selectedChoice = -1;
-    private int selectedTrackId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +45,16 @@ public class ListenActivity extends BaseActivity {
             return insets;
         });
 
-        webView1 = findViewById(R.id.webView1);
-        webView2 = findViewById(R.id.webView2);
-        webView3 = findViewById(R.id.webView3);
+        WebView webView1 = findViewById(R.id.webView1);
+        WebView webView2 = findViewById(R.id.webView2);
+        WebView webView3 = findViewById(R.id.webView3);
 
         buttonChoice1 = findViewById(R.id.buttonChoice1);
         buttonChoice2 = findViewById(R.id.buttonChoice2);
         buttonChoice3 = findViewById(R.id.buttonChoice3);
 
-        buttonPrevious = findViewById(R.id.buttonPrevious);
-        buttonHome = findViewById(R.id.buttonHome);
+        findViewById(R.id.buttonPrevious);
+        findViewById(R.id.buttonHome);
 
         db = Room.databaseBuilder(
                 getApplicationContext(),
@@ -87,8 +83,6 @@ public class ListenActivity extends BaseActivity {
     }
 
     private void selectChoice(int choice, int trackId) {
-        selectedChoice = choice;
-        selectedTrackId = trackId;
 
         buttonChoice1.setText(choice == 1 ? "Selected" : "Choose Preview n°1");
         buttonChoice2.setText(choice == 2 ? "Selected" : "Choose Preview n°2");
@@ -97,7 +91,7 @@ public class ListenActivity extends BaseActivity {
         Toast.makeText(this, "Preview " + choice + " selected", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(ListenActivity.this, QuizEndActivity.class);
-        intent.putExtra("trackId", selectedTrackId);
+        intent.putExtra("trackId", trackId);
         startActivity(intent);
     }
 
@@ -135,6 +129,7 @@ public class ListenActivity extends BaseActivity {
             }
         }
     }
+    @SuppressLint("SetTextI18n")
     private void bindPreviewSlot(int index, WebView webView, Button button) {
         if (index >= previewTracks.size()) {
             webView.setVisibility(View.GONE);
@@ -150,6 +145,7 @@ public class ListenActivity extends BaseActivity {
         webView.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupSpotifyWebView(WebView webView, String embedUrl) {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -184,7 +180,7 @@ public class ListenActivity extends BaseActivity {
     }
 
     public void clickChoice1(View view) {
-        if (previewTracks.size() > 0) {
+        if (!previewTracks.isEmpty()) {
             selectChoice(1, previewTracks.get(0).id);
         }
     }

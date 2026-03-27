@@ -9,10 +9,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.room.Room;
-
-import com.example.what2play.database.AppDatabase;
-import com.example.what2play.database.entities.Track;
 
 public class MainActivity extends BaseActivity {
 

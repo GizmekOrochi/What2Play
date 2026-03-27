@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.*;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,9 +48,9 @@ public class AddSongActivity extends BaseActivity {
         artistSpinner = findViewById(R.id.spinner2);
         songNameInput = findViewById(R.id.editTextText);
         linkInput = findViewById(R.id.editTextText2);
-        Button backButton = findViewById(R.id.button);
-        Button addButton = findViewById(R.id.button2);
-        Button goToArtistButton = findViewById(R.id.goToArtistButton);
+        findViewById(R.id.button);
+        findViewById(R.id.button2);
+        findViewById(R.id.goToArtistButton);
 
         //init DB
         db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db").allowMainThreadQueries().build();

@@ -1,5 +1,6 @@
 package com.example.what2play;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,9 +28,9 @@ public class ActivityLink extends AppCompatActivity {
 
     private FrameLayout gameArea;
 
-    private MaterialCardView[] artistCards = new MaterialCardView[6];
-    private MaterialCardView[] rankCards = new MaterialCardView[6];
-    private TextView[] artistTexts = new TextView[6];
+    private final MaterialCardView[] artistCards = new MaterialCardView[6];
+    private final MaterialCardView[] rankCards = new MaterialCardView[6];
+    private final TextView[] artistTexts = new TextView[6];
 
     private Button buttonPrevious, buttonHome, buttonValidate;
 
@@ -140,6 +141,7 @@ public class ActivityLink extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setupArtistTouchListeners() {
         for (int i = 0; i < artistCards.length; i++) {
             final int artistIndex = i;
@@ -361,7 +363,7 @@ public class ActivityLink extends AppCompatActivity {
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
+        protected void onDraw(@NonNull Canvas canvas) {
             super.onDraw(canvas);
 
             for (Line line : fixedLines) {

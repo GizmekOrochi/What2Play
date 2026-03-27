@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -46,9 +45,8 @@ public class AddArtistActivity extends BaseActivity {
         });
 
 
-        Button backButton = findViewById(R.id.button);
-        Button goToSongButton = findViewById(R.id.goToSongButton);
-        Button addButton = findViewById(R.id.button2);
+        findViewById(R.id.button);
+        findViewById(R.id.goToSongButton);
         artistInput = findViewById(R.id.editTextText);
         spinner = findViewById(R.id.spinner);
 

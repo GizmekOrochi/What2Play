@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -28,9 +27,6 @@ public class QuizEndActivity extends BaseActivity {
 
     private Track track;
     private Artist artist;
-    private TextView titleView, artistView;
-
-    private Button playButton, shareButton, menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +41,11 @@ public class QuizEndActivity extends BaseActivity {
 
         Log.d(TAG, "Activity started");
 
-        titleView = findViewById(R.id.songTitle);
-        artistView = findViewById(R.id.songArtist);
-        playButton = findViewById(R.id.btnPlaySpotify);
-        shareButton = findViewById(R.id.btnShare);
-        menuButton = findViewById(R.id.btnMenu);
+        TextView titleView = findViewById(R.id.songTitle);
+        TextView artistView = findViewById(R.id.songArtist);
+        findViewById(R.id.btnPlaySpotify);
+        findViewById(R.id.btnShare);
+        findViewById(R.id.btnMenu);
 
         //Initialize the  database
         AppDatabase db = Room.databaseBuilder(

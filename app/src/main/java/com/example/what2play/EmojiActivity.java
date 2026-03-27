@@ -1,13 +1,11 @@
 package com.example.what2play;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,12 +25,11 @@ public class EmojiActivity extends BaseActivity {
     //chips d'affichage
     private Chip chipRankA1, chipRankB1, chipRankA2, chipRankB2;
 
-    private Button buttonPrevious2, buttonHome2, buttonValidate2;
+    private Button buttonValidate2;
 
     //stockage du classement
     private final ArrayList<Integer> ranking = new ArrayList<>();
 
-    private AppDatabase db;
     private ArrayList<Genre> rapGenres;
 
 
@@ -57,12 +54,12 @@ public class EmojiActivity extends BaseActivity {
         chipRankA2 = findViewById(R.id.chipRankA2);
         chipRankB2 = findViewById(R.id.chipRankB2);
 
-        buttonPrevious2 = findViewById(R.id.buttonPrevious2);
-        buttonHome2 = findViewById(R.id.buttonHome2);
+        findViewById(R.id.buttonPrevious2);
+        findViewById(R.id.buttonHome2);
         buttonValidate2 = findViewById(R.id.buttonValidate2);
 
 
-        db = Room.databaseBuilder(
+        AppDatabase db = Room.databaseBuilder(
                 getApplicationContext(),
                 AppDatabase.class,
                 "what2play-db"
