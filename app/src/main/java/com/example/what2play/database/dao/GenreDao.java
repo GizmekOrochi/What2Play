@@ -21,6 +21,12 @@ public interface GenreDao {
     @Query("SELECT * FROM genres")
     List<Genre> getAll();
 
+    @Query("SELECT * FROM genres WHERE id = :genreId LIMIT 1")
+    Genre getById(int genreId);
+
+    @Query("SELECT * FROM genres WHERE name = :genreName LIMIT 1")
+    Genre getByName(String genreName);
+
     @Query("DELETE FROM genres")
     void clear();
 }
