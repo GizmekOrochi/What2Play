@@ -57,7 +57,8 @@ public class MainActivity extends BaseActivity {
         });
 
         startButton.setOnClickListener(v ->
-                startActivity(new Intent(this, ListenActivity.class)));
+                startActivity(new Intent(this, GenreActivity.class)
+                ));
 
         addButton.setOnClickListener(v ->
                 startActivity(new Intent(this, AddSongActivity.class)));

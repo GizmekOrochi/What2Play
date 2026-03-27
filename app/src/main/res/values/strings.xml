@@ -15,13 +15,26 @@
     <string name="French">French</string>
     <string name="langue">Language</string>
     <string name="apply">Apply</string>
-    <string name="back">back</string>
+    <string name="back">Return</string>
     <string name="gender">Gender</string>
     <string name="artist">Artist</string>
     <string name="name">Name</string>
     <string name="song_name">Song Name</string>
     <string name="song_link">Song Link</string>
     <string name="artist_name">Artist Name</string>
+    <string name="home_button">Home</string>
+    <string name="previous_buttons">Previous</string>
+    <string name="listen_question_description">Listen to these 3 previews And choose the one you like the most.</string>
+    <string name="validate_buttons">Validate</string>
+    <string name="urban_music_title">Urban Music</string>
+    <string name="live_music_title">\"Live\" Music</string>
+    <string name="electronic_instrumental_music_title">Electronic / Instrumental Music</string>
+    <string name="rapimage">RapImage</string>
+    <string name="rap_description" translatable="false">Boom Bap, West Coast, Trap, Cloud Rap</string>
+    <string name="livemusicimage">LiveMusicImage</string>
+    <string name="live_music_description" translatable="false">Rock, Jazz, Metal, Blues</string>
+    <string name="electronicimagedescription">ElectronicImageDescription</string>
+    <string name="electronic_instrumental_description" translatable="false">House, EDM, Lo-Fi, Synthwave</string>
     <string name="play_on_spotify">Play on Spotify</string>
     <string name="share">Share</string>
 </resources>
