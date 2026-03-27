@@ -37,14 +37,15 @@
         <activity
             android:name=".SliderActivity"
             android:exported="false"
-            android:theme="@style/Theme.What2Play" /> <!-- MainActivity (NO launcher) -->
+            android:theme="@style/Theme.What2Play" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- LoadingActivity (launcher) -->
+            android:exported="false" />
         <activity android:name=".StartActivity" />
         <activity android:name=".AddSongActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AddArtistActivity" />
+        <activity android:name=".QuizEndActivity" />
         <activity
             android:name=".LoadingActivity"
             android:exported="true">

@@ -35,4 +35,6 @@
     <string name="live_music_description" translatable="false">Rock, Jazz, Metal, Blues</string>
     <string name="electronicimagedescription">ElectronicImageDescription</string>
     <string name="electronic_instrumental_description" translatable="false">House, EDM, Lo-Fi, Synthwave</string>
+    <string name="play_on_spotify">Play on Spotify</string>
+    <string name="share">Share</string>
 </resources>

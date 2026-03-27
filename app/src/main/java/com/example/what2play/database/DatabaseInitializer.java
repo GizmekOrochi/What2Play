@@ -21,7 +21,7 @@ public class DatabaseInitializer {
         addTracks(db, artistMap);
     }
 
-    //MOODS
+    //Mood initialistation
     private static Map<String, Integer> addMoods(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.MoodData m : MusicData.MOODS) {
@@ -34,7 +34,7 @@ public class DatabaseInitializer {
         return map;
     }
 
-    //GENRES
+    //Genre initialistation
     private static Map<String, Integer> addGenres(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.GenreData g : MusicData.GENRES) {
@@ -47,7 +47,7 @@ public class DatabaseInitializer {
         return map;
     }
 
-    //ARTISTS
+    //Artists initialistation
     private static Map<String, Integer> addArtists(AppDatabase db) {
         Map<String, Integer> map = new HashMap<>();
         for (MusicData.ArtistData a : MusicData.ARTISTS) {
@@ -60,7 +60,7 @@ public class DatabaseInitializer {
         return map;
     }
 
-    //GENRE <> MOOD
+    //Relations initialistation
     private static void linkGenreMood(AppDatabase db, Map<String, Integer> genreMap, Map<String, Integer> moodMap) {
         for (MusicData.GenreMoodData gm : MusicData.GENRE_MOOD) {
             GenreMood rel = new GenreMood();
@@ -70,7 +70,6 @@ public class DatabaseInitializer {
         }
     }
 
-    //ARTIST <> GENRE
     private static void linkArtistGenre(AppDatabase db, Map<String, Integer> artistMap, Map<String, Integer> genreMap) {
         for (MusicData.ArtistGenreData ag : MusicData.ARTIST_GENRE) {
             GenreArtist rel = new GenreArtist();
@@ -80,8 +79,7 @@ public class DatabaseInitializer {
         }
     }
 
-    //TRACKS
-    //TRACKS
+    //Track initialistation
     private static void addTracks(AppDatabase db, Map<String, Integer> artistMap) {
         for (MusicData.TrackData tData : MusicData.TRACKS) {
             Track t = new Track();

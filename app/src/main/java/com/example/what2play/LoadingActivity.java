@@ -23,17 +23,17 @@ public class LoadingActivity extends BaseActivity {
 
         new Thread(() -> {
 
-            // create database
+            //create database
             AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "what2play-db")
                     .fallbackToDestructiveMigration().allowMainThreadQueries().build();
 
             Log.d(TAG, "Database created");
 
-            // fill database with initial data
+            //fill database with initial data
             DatabaseInitializer.initiate(db);
             Log.d(TAG, "Database populated");
 
-            // small delay to show loading screen
+            //small delay to show loading screen
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

@@ -19,7 +19,7 @@ import com.example.what2play.database.entities.GenreArtist;
 import java.util.ArrayList;
 import java.util.List;
 
-// Activity to add a new artist and link it to a genre
+//Activity to add a new artist and link it to a genre
 public class AddArtistActivity extends BaseActivity {
     private static final String TAG = "AddArtistActivity";
 

@@ -25,7 +25,7 @@ public class SettingsActivity extends BaseActivity {
         Button btnBack = findViewById(R.id.btnBack);
         Button btnApply = findViewById(R.id.btnApply);
 
-        // Load saved language
+        //Load saved language
         SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
         selectedLang = prefs.getString("lang", "en");
 
@@ -40,7 +40,7 @@ public class SettingsActivity extends BaseActivity {
             flagFrench.setAlpha(0.5f);
         }
 
-        // English click
+        //English click
         flagEnglish.setOnClickListener(v -> {
             selectedLang = "en";
             Log.d(TAG, "English selected");
@@ -49,7 +49,7 @@ public class SettingsActivity extends BaseActivity {
             flagFrench.setAlpha(0.5f);
         });
 
-        // French click
+        //French click
         flagFrench.setOnClickListener(v -> {
             selectedLang = "fr";
             Log.d(TAG, "French selected");
@@ -58,7 +58,7 @@ public class SettingsActivity extends BaseActivity {
             flagEnglish.setAlpha(0.5f);
         });
 
-        // Apply button
+        //Apply button
         btnApply.setOnClickListener(v -> {
             Log.d(TAG, "Apply clicked with the language: " + selectedLang);
 
@@ -66,13 +66,13 @@ public class SettingsActivity extends BaseActivity {
 
             Log.d(TAG, "Language has been saved");
 
-            // Restart app
+            //Restart app
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         });
 
-        // Back button
+        //Back button
         btnBack.setOnClickListener(v -> {
             Log.d(TAG, "Back has been pressed");
             finish();
