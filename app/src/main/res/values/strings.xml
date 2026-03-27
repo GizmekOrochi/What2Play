@@ -22,4 +22,6 @@
     <string name="song_name">Song Name</string>
     <string name="song_link">Song Link</string>
     <string name="artist_name">Artist Name</string>
+    <string name="play_on_spotify">Play on Spotify</string>
+    <string name="share">Share</string>
 </resources>
