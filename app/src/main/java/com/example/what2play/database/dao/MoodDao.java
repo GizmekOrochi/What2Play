@@ -11,6 +11,8 @@ import java.util.List;
 
 @Dao
 public interface MoodDao {
+    @Query("SELECT COUNT(*) FROM moods")
+    int count();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(Mood mood);

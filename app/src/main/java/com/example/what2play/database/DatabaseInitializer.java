@@ -8,8 +8,9 @@ import java.util.Map;
 public class DatabaseInitializer {
 
     public static void initiate(AppDatabase db) {
-        db.clearAllTables();
-        db.getOpenHelper().getWritableDatabase().execSQL("DELETE FROM sqlite_sequence");
+        if (db.moodDao().count() > 0) {
+            return;
+        }
 
         Map<String, Integer> moodMap = addMoods(db);
         Map<String, Integer> genreMap = addGenres(db);
