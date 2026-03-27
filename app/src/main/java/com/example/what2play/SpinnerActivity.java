@@ -1,17 +1,17 @@
 package com.example.what2play;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,13 +21,11 @@ import com.example.what2play.database.AppDatabase;
 import com.example.what2play.database.entities.Genre;
 
 public class SpinnerActivity extends BaseActivity {
+    private static final String TAG = "SpinnerActivity";
+
     private TextView questionTitle;
     private TextView previewText;
     private Spinner spinnerGenreMode;
-
-    private Button buttonPrevious5;
-    private Button buttonHome5;
-    private Button buttonValidate5;
 
     private AppDatabase db;
 
@@ -36,11 +34,11 @@ public class SpinnerActivity extends BaseActivity {
     private int selectedGenre1Id;
     private int selectedGenre2Id;
 
-    private String selectedGenre1Name;
-    private String selectedGenre2Name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate called");
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_spinner);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -53,9 +51,9 @@ public class SpinnerActivity extends BaseActivity {
         previewText = findViewById(R.id.previewText);
         spinnerGenreMode = findViewById(R.id.spinnerGenreMode);
 
-        buttonPrevious5 = findViewById(R.id.buttonPrevious5);
-        buttonHome5 = findViewById(R.id.buttonHome5);
-        buttonValidate5 = findViewById(R.id.buttonValidate5);
+        findViewById(R.id.buttonPrevious5);
+        findViewById(R.id.buttonHome5);
+        findViewById(R.id.buttonValidate5);
 
         db = Room.databaseBuilder(
                 getApplicationContext(),
@@ -63,10 +61,14 @@ public class SpinnerActivity extends BaseActivity {
                 "what2play-db"
         ).allowMainThreadQueries().build();
 
+        Log.d(TAG, "Database initialized");
+
         spinnerMode = getIntent().getStringExtra("spinner_mode");
+        Log.d(TAG, "Spinner mode received: " + spinnerMode);
 
         if (spinnerMode == null) {
             Toast.makeText(this, "Invalid spinner mode", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Spinner mode is null");
             finish();
             return;
         }
@@ -76,19 +78,23 @@ public class SpinnerActivity extends BaseActivity {
         spinnerGenreMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Spinner item selected: " + position);
                 updateSelectionFromSpinner(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                Log.d(TAG, "Nothing selected in spinner");
             }
         });
 
         updateSelectionFromSpinner(0);
-
     }
 
+    @SuppressLint("SetTextI18n")
     private void updateSelectionFromSpinner(int position) {
+        Log.d(TAG, "Position selected: " + position);
+
         Genre genre1;
         Genre genre2;
 
@@ -112,24 +118,31 @@ public class SpinnerActivity extends BaseActivity {
                 genre2 = db.genreDao().getByName("Synthwave");
             }
         } else {
+            Log.e(TAG, "Unknown spiner thing selected");
             return;
         }
 
         if (genre1 == null || genre2 == null) {
             Toast.makeText(this, "Genres not found in database", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Genre not found in db");
             return;
         }
 
         selectedGenre1Id = genre1.id;
         selectedGenre2Id = genre2.id;
 
-        selectedGenre1Name = genre1.name;
-        selectedGenre2Name = genre2.name;
+        Log.d(TAG, "Selected genres id: " + selectedGenre1Id + ", " + selectedGenre2Id);
+
+        String selectedGenre1Name = genre1.name;
+        String selectedGenre2Name = genre2.name;
 
         previewText.setText("Selected genres: " + selectedGenre1Name + " / " + selectedGenre2Name);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setupSpinnerForMode() {
+        Log.d(TAG, "Setting up spinner mode: " + spinnerMode);
+
         String[] options;
 
         if (spinnerMode.equals("live")) {
@@ -147,6 +160,7 @@ public class SpinnerActivity extends BaseActivity {
             };
         } else {
             Toast.makeText(this, "Unknown spinner mode", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Unknown spinner mode");
             finish();
             return;
         }
@@ -159,26 +173,33 @@ public class SpinnerActivity extends BaseActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGenreMode.setAdapter(adapter);
     }
+
     public void clickPrevious5(View view) {
+        Log.d(TAG, "previous button clicked");
         finish();
     }
 
     public void clickHome5(View view) {
+        Log.d(TAG, "home button clicked");
         Intent intent = new Intent(SpinnerActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(intent);
     }
 
     public void clickValidate5(View view) {
+        Log.d(TAG, "validate button clicked");
+
         if (selectedGenre1Id <= 0 || selectedGenre2Id <= 0) {
             Toast.makeText(this, "No valid genre selection", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Invalid genre");
             return;
         }
+
+        Log.d(TAG, "Going to SliderActivity with genres: " + selectedGenre1Id + ", " + selectedGenre2Id);
 
         Intent intent = new Intent(SpinnerActivity.this, SliderActivity.class);
         intent.putExtra("genre1_id", selectedGenre1Id);
         intent.putExtra("genre2_id", selectedGenre2Id);
         startActivity(intent);
     }
-
 }
