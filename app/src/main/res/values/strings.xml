@@ -1,10 +1,7 @@
 <resources>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="lorem_ipsum">lo</string>
     <string name="app_name" translatable="false">What2Play</string>
     <string name="go_to_add_artist">Add Artist</string>
     <string name="go_to_add_song">Add Song</string>
@@ -24,7 +21,7 @@
     <string name="artist_name">Artist Name</string>
     <string name="home_button">Home</string>
     <string name="previous_buttons">Previous</string>
-    <string name="listen_question_description">Listen to these 3 previews And choose the one you like the most.</string>
+    <string name="listen_question_description">Listen to these 3 previews\nAnd choose the one you like the most.</string>
     <string name="validate_buttons">Validate</string>
     <string name="urban_music_title">Urban Music</string>
     <string name="live_music_title">\"Live\" Music</string>
@@ -54,4 +51,19 @@
     <string name="artist_template">[Artist]</string>
     <string name="swipe_activity_description">Swipe to the left if you don\'t like this artist  \nSwipe to the right if you like this artist</string>
     <string name="swipe_activity_title">Choose your favorite artists</string>
+    <string name="slider_question_title">Choose your mix between the two genres</string>
+    <string name="finished">Finished</string>
+    <string name="invalid_spinner_mode">Invalid spinner mode</string>
+    <string name="genres_not_found_database">Genres not found in database</string>
+    <string name="selected_genres_preview">Selected genres: %1$s / %2$s</string>
+    <string name="spinner_question_title">Choose the mood you\'re into right now</string>
+    <string name="unknown_spinner_mode">Unknown spinner mode</string>
+    <string name="no_valid_genre_selection">No valid genre selection</string>
+
+    <string name="spinner_live_option_1">Smooth and expressive</string>
+    <string name="spinner_live_option_2">Powerful and intense</string>
+
+    <string name="spinner_electro_option_1">Energetic, danceable</string>
+    <string name="spinner_electro_option_2">Chill</string>
+    <string name="spinner_electro_option_3">Retro</string>
 </resources>

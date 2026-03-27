@@ -21,8 +21,7 @@ import com.example.what2play.database.entities.Track;
 
 import java.util.List;
 
-// Activity displayed at the end of the quiz
-// Shows the selected song and allows user to play/share it
+//This activity show the selected song and allows user to play it on spotify or share it
 public class QuizEndActivity extends BaseActivity {
 
     private static final String TAG = "QuizEndActivity";

@@ -18,7 +18,7 @@
     <string name="artist_name">Nom de l\'Artiste</string>
     <string name="home_button">Menu</string>
     <string name="previous_buttons">Précédent</string>
-    <string name="listen_question_description">Écoutez les 3 extraits\nEt Choisissez celui que vous aimez le plus.</string>
+    <string name="listen_question_description">Écoutez les 3 extraits Et choisissez celui que vous aimez le plus.</string>
     <string name="validate_buttons">Valider</string>
     <string name="next">Suivant</string>
     <string name="previous">Précédent</string>
@@ -39,4 +39,19 @@
     <string name="artist_template">[Artiste]</string>
     <string name="swipe_activity_description">" Glissez vers la gauche si vous n'aimez pas cet artiste\n Glissez vers la droite si vous aimez cet artiste"</string>
     <string name="swipe_activity_title">Choisissez vos artistes préférés</string>
+    <string name="slider_question_title">Choisissez votre mix parmi les deux genres</string>
+    <string name="finished">Terminé</string>
+    <string name="invalid_spinner_mode">Mode du spinner invalide</string>
+    <string name="genres_not_found_database">Genres introuvables dans la base de données</string>
+    <string name="selected_genres_preview">Genres sélectionnés : %1$s / %2$s</string>
+    <string name="spinner_question_title">Choisissez l’ambiance qui vous correspond\n le plus en ce moment</string>
+    <string name="unknown_spinner_mode">Mode du spinner inconnu</string>
+    <string name="no_valid_genre_selection">Aucune sélection de genres valide</string>
+
+    <string name="spinner_live_option_1">Doux et expressive</string>
+    <string name="spinner_live_option_2">Puissant et intense</string>
+
+    <string name="spinner_electro_option_1">Énergique, dansant</string>
+    <string name="spinner_electro_option_2">Chill</string>
+    <string name="spinner_electro_option_3">Rétro</string>
 </resources>
