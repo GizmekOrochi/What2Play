@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
+import com.example.what2play.database.AppDatabase;
+import com.example.what2play.database.entities.Genre;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -22,7 +25,11 @@ public class EmojiActivity extends AppCompatActivity {
     private Button buttonPrevious2, buttonHome2, buttonValidate2;
 
     //stockage du classement
-    private final ArrayList<String> ranking = new ArrayList<>();
+    private final ArrayList<Integer> ranking = new ArrayList<>();
+
+    private AppDatabase db;
+    private ArrayList<Genre> rapGenres;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +51,22 @@ public class EmojiActivity extends AppCompatActivity {
         buttonValidate2 = findViewById(R.id.buttonValidate2);
 
 
-        chipBoomBap.setOnClickListener(v -> toggleStyle("Boom Bap"));
-        chipWestCoast.setOnClickListener(v -> toggleStyle("West Coast"));
-        chipTrap.setOnClickListener(v -> toggleStyle("Trap"));
-        chipCloudRap.setOnClickListener(v -> toggleStyle("Cloud Rap"));
+        AppDatabase db = Room.databaseBuilder(
+                getApplicationContext(),
+                AppDatabase.class,
+                "what2play-db"
+        ).allowMainThreadQueries().build();
+
+        rapGenres = new ArrayList<>(db.genreDao().getGenresForEmojiQuestion());
+
+        if (rapGenres == null || rapGenres.size() != 4) {
+            return;
+        }
+
+        chipBoomBap.setOnClickListener(v -> toggleStyle((int) chipBoomBap.getTag()));
+        chipWestCoast.setOnClickListener(v -> toggleStyle((int) chipWestCoast.getTag()));
+        chipTrap.setOnClickListener(v -> toggleStyle((int) chipTrap.getTag()));
+        chipCloudRap.setOnClickListener(v -> toggleStyle((int) chipCloudRap.getTag()));
 
 
         buttonPrevious2.setOnClickListener(v -> finish());
@@ -64,18 +83,28 @@ public class EmojiActivity extends AppCompatActivity {
                 return;
             }
 
-            String top1 = ranking.get(0);
-            String top2 = ranking.get(1);
+            int genre1Id = ranking.get(0);
+            int genre2Id = ranking.get(1);
+            /*Genre genre1 = db.genreDao().getByName(top1);
+            Genre genre2 = db.genreDao().getByName(top2);
+
+
+            if (genre1 == null || genre2 == null) {
+                Toast.makeText(this, "Genre not found in database", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             // Ici tu envoies les 2 genres principaux à l'activité suivante
             // Remplace NextActivity par la vraie activité suivante
             Intent intent = new Intent(EmojiActivity.this, SliderActivity.class);
-            intent.putExtra("genre1", top1);
-            intent.putExtra("genre2", top2);
+            intent.putExtra("genre1_id", genre1.id);
+            intent.putExtra("genre2_id", genre2.id);
             startActivity(intent);
+            */
         });
 
         updateRankingDisplay();
+        setupGenreChipsFromDb();
         updateChoiceChipStyles();
         updateValidateButtonState();
     }
@@ -85,11 +114,11 @@ public class EmojiActivity extends AppCompatActivity {
     private void setupButtons() {
     }
 
-    private void toggleStyle(String style) {
-        if (ranking.contains(style)) {
-            ranking.remove(style);
+    private void toggleStyle(int genreId) {
+        if (ranking.contains(genreId)) {
+            ranking.remove(Integer.valueOf(genreId));
         } else {
-            ranking.add(style);
+            ranking.add(genreId);
         }
 
         updateRankingDisplay();
@@ -99,14 +128,21 @@ public class EmojiActivity extends AppCompatActivity {
 
     private void updateRankingDisplay() {
         // On met le rang dans la grille miroir, à la même position que l'emoji correspondant
-        chipRankA1.setText(getRankText("Boom Bap"));
-        chipRankB1.setText(getRankText("West Coast"));
-        chipRankA2.setText(getRankText("Trap"));
-        chipRankB2.setText(getRankText("Cloud Rap"));
+        chipRankA1.setText(getRankText((int) chipBoomBap.getTag()));
+        chipRankB1.setText(getRankText((int) chipWestCoast.getTag()));
+        chipRankA2.setText(getRankText((int) chipTrap.getTag()));
+        chipRankB2.setText(getRankText((int) chipCloudRap.getTag()));
     }
 
-    private String getRankText(String style) {
-        int index = ranking.indexOf(style);
+    private void setupGenreChipsFromDb() {
+        chipBoomBap.setTag(rapGenres.get(0).id);
+        chipWestCoast.setTag(rapGenres.get(1).id);
+        chipTrap.setTag(rapGenres.get(2).id);
+        chipCloudRap.setTag(rapGenres.get(3).id);
+    }
+
+    private String getRankText(int genreId) {
+        int index = ranking.indexOf(genreId);
         if (index == -1) {
             return "◌";
         }
@@ -114,10 +150,10 @@ public class EmojiActivity extends AppCompatActivity {
     }
 
     private void updateChoiceChipStyles() {
-        updateChipStyle(chipBoomBap, ranking.contains("Boom Bap"));
-        updateChipStyle(chipWestCoast, ranking.contains("West Coast"));
-        updateChipStyle(chipTrap, ranking.contains("Trap"));
-        updateChipStyle(chipCloudRap, ranking.contains("Cloud Rap"));
+        updateChipStyle(chipBoomBap, ranking.contains((int) chipBoomBap.getTag()));
+        updateChipStyle(chipWestCoast, ranking.contains((int) chipWestCoast.getTag()));
+        updateChipStyle(chipTrap, ranking.contains((int) chipTrap.getTag()));
+        updateChipStyle(chipCloudRap, ranking.contains((int) chipCloudRap.getTag()));;
     }
 
     private void updateChipStyle(Chip chip, boolean selected) {
@@ -136,4 +172,5 @@ public class EmojiActivity extends AppCompatActivity {
         buttonValidate2.setEnabled(enabled);
         buttonValidate2.setAlpha(enabled ? 1.0f : 0.5f);
     }
+
 }
