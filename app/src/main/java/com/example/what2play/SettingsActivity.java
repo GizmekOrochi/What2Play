@@ -4,26 +4,42 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends BaseActivity {
 
     private String selectedLang;
 
+    private ImageView flagEnglish;
+    private ImageView flagFrench;
+    private Button btnBack;
+    private Button btnApply;
     private static final String TAG = "SettingsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_settings);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         Log.d(TAG, "onCreate");
 
-        ImageView flagEnglish = findViewById(R.id.flagEnglish);
-        ImageView flagFrench = findViewById(R.id.flagFrench);
-        Button btnBack = findViewById(R.id.btnBack);
-        Button btnApply = findViewById(R.id.btnApply);
+        flagEnglish = findViewById(R.id.flagEnglish);
+        flagFrench = findViewById(R.id.flagFrench);
+        btnBack = findViewById(R.id.btnBack);
+        btnApply = findViewById(R.id.btnApply);
 
         //Load saved language
         SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
@@ -40,42 +56,44 @@ public class SettingsActivity extends BaseActivity {
             flagFrench.setAlpha(0.5f);
         }
 
-        //English click
-        flagEnglish.setOnClickListener(v -> {
-            selectedLang = "en";
-            Log.d(TAG, "English selected");
-
-            flagEnglish.setAlpha(1f);
-            flagFrench.setAlpha(0.5f);
-        });
-
-        //French click
-        flagFrench.setOnClickListener(v -> {
-            selectedLang = "fr";
-            Log.d(TAG, "French selected");
-
+    }
+    private void updateFlagDisplay() {
+        if ("fr".equals(selectedLang)) {
             flagFrench.setAlpha(1f);
             flagEnglish.setAlpha(0.5f);
-        });
+        } else {
+            flagEnglish.setAlpha(1f);
+            flagFrench.setAlpha(0.5f);
+        }
+    }
 
-        //Apply button
-        btnApply.setOnClickListener(v -> {
-            Log.d(TAG, "Apply clicked with the language: " + selectedLang);
+    public void clickEnglish(View view) {
+        selectedLang = "en";
+        Log.d(TAG, "English selected");
+        updateFlagDisplay();
+    }
 
-            prefs.edit().putString("lang", selectedLang).apply();
+    public void clickFrench(View view) {
+        selectedLang = "fr";
+        Log.d(TAG, "French selected");
+        updateFlagDisplay();
+    }
 
-            Log.d(TAG, "Language has been saved");
+    public void clickApply(View view) {
+        Log.d(TAG, "Apply clicked with the language: " + selectedLang);
 
-            //Restart app
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        });
+        SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
+        prefs.edit().putString("lang", selectedLang).apply();
 
-        //Back button
-        btnBack.setOnClickListener(v -> {
-            Log.d(TAG, "Back has been pressed");
-            finish();
-        });
+        Log.d(TAG, "Language has been saved");
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    public void clickBack(View view) {
+        Log.d(TAG, "Back has been pressed");
+        finish();
     }
 }

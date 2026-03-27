@@ -11,6 +11,7 @@
         android:id="@+id/buttonPrevious2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="clickPrevious2"
         android:text="@string/previous_buttons"
         app:layout_constraintBottom_toBottomOf="@+id/buttonHome2"
         app:layout_constraintEnd_toStartOf="@+id/buttonHome2"
@@ -21,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        android:onClick="clickHome2"
         android:text="@string/home_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +32,7 @@
         android:id="@+id/buttonValidate2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="clickValidate2"
         android:text="@string/validate_buttons"
         app:layout_constraintBottom_toBottomOf="@+id/buttonHome2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +55,7 @@
         android:id="@+id/emoji_question_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap the emojis in order of preference"
+        android:text="@string/emoji_description"
         android:textAlignment="center"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +74,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <androidx.gridlayout.widget.GridLayout
@@ -88,10 +92,12 @@
                     android:layout_marginEnd="4dp"
                     android:checkable="false"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="🎤"
+                    android:text="@string/boom_bap_emoji"
                     android:textAlignment="center"
+                    android:textColor="#78909C"
                     android:textSize="24sp" />
 
                 <com.google.android.material.chip.Chip
@@ -100,9 +106,10 @@
                     android:layout_height="80dp"
                     android:checkable="false"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="🌴"
+                    android:text="@string/west_coast_emoji"
                     android:textAlignment="center"
                     android:textSize="24sp" />
 
@@ -113,10 +120,12 @@
                     android:layout_marginEnd="4dp"
                     android:checkable="false"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="💥"
+                    android:text="@string/trap_emoji"
                     android:textAlignment="center"
+                    android:textColor="#FF5722"
                     android:textSize="24sp" />
 
                 <com.google.android.material.chip.Chip
@@ -125,10 +134,12 @@
                     android:layout_height="80dp"
                     android:checkable="false"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="🌫️"
+                    android:text="@string/cloud_rap_emoji"
                     android:textAlignment="center"
+                    android:textColor="#78909C"
                     android:textSize="24sp" />
 
             </androidx.gridlayout.widget.GridLayout>
@@ -149,7 +160,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="◌"
+                    android:text="@string/empty_rank_chip_emoji"
                     android:textAlignment="center"
                     android:textSize="24sp" />
 
@@ -161,7 +172,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="◌"
+                    android:text="@string/empty_rank_chip_emoji"
                     android:textAlignment="center"
                     android:textSize="24sp" />
 
@@ -174,7 +185,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="◌"
+                    android:text="@string/empty_rank_chip_emoji"
                     android:textAlignment="center"
                     android:textSize="24sp" />
 
@@ -186,7 +197,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:padding="0dp"
-                    android:text="◌"
+                    android:text="@string/empty_rank_chip_emoji"
                     android:textAlignment="center"
                     android:textSize="24sp" />
 

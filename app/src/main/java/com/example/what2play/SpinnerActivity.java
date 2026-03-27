@@ -20,7 +20,7 @@ import androidx.room.Room;
 import com.example.what2play.database.AppDatabase;
 import com.example.what2play.database.entities.Genre;
 
-public class SpinnerActivity extends AppCompatActivity {
+public class SpinnerActivity extends BaseActivity {
     private TextView questionTitle;
     private TextView previewText;
     private Spinner spinnerGenreMode;
@@ -86,25 +86,6 @@ public class SpinnerActivity extends AppCompatActivity {
 
         updateSelectionFromSpinner(0);
 
-        buttonPrevious5.setOnClickListener(v -> finish());
-
-        buttonHome5.setOnClickListener(v -> {
-            Intent intent = new Intent(SpinnerActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
-
-        buttonValidate5.setOnClickListener(v -> {
-            if (selectedGenre1Id <= 0 || selectedGenre2Id <= 0) {
-                Toast.makeText(this, "No valid genre selection", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Intent intent = new Intent(SpinnerActivity.this, SliderActivity.class);
-            intent.putExtra("genre1_id", selectedGenre1Id);
-            intent.putExtra("genre2_id", selectedGenre2Id);
-            startActivity(intent);
-        });
     }
 
     private void updateSelectionFromSpinner(int position) {
@@ -178,6 +159,26 @@ public class SpinnerActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGenreMode.setAdapter(adapter);
     }
+    public void clickPrevious5(View view) {
+        finish();
+    }
 
+    public void clickHome5(View view) {
+        Intent intent = new Intent(SpinnerActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    public void clickValidate5(View view) {
+        if (selectedGenre1Id <= 0 || selectedGenre2Id <= 0) {
+            Toast.makeText(this, "No valid genre selection", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(SpinnerActivity.this, SliderActivity.class);
+        intent.putExtra("genre1_id", selectedGenre1Id);
+        intent.putExtra("genre2_id", selectedGenre2Id);
+        startActivity(intent);
+    }
 
 }

@@ -9,6 +9,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
 import com.example.what2play.database.AppDatabase;
@@ -25,6 +29,8 @@ public class ListenActivity extends BaseActivity {
     private WebView webView1, webView2, webView3;
     private Button buttonChoice1, buttonChoice2, buttonChoice3;
 
+    private Button buttonHome, buttonPrevious;
+
 
     private AppDatabase db;
 
@@ -35,9 +41,14 @@ public class ListenActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_listen);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        // Récupération des vues
         webView1 = findViewById(R.id.webView1);
         webView2 = findViewById(R.id.webView2);
         webView3 = findViewById(R.id.webView3);
@@ -45,6 +56,9 @@ public class ListenActivity extends BaseActivity {
         buttonChoice1 = findViewById(R.id.buttonChoice1);
         buttonChoice2 = findViewById(R.id.buttonChoice2);
         buttonChoice3 = findViewById(R.id.buttonChoice3);
+
+        buttonPrevious = findViewById(R.id.buttonPrevious);
+        buttonHome = findViewById(R.id.buttonHome);
 
         db = Room.databaseBuilder(
                 getApplicationContext(),
@@ -134,8 +148,6 @@ public class ListenActivity extends BaseActivity {
         button.setText("Choose Preview n°" + (index + 1));
         button.setVisibility(View.VISIBLE);
         webView.setVisibility(View.VISIBLE);
-
-        button.setOnClickListener(v -> selectChoice(index + 1, track.id));
     }
 
     private void setupSpotifyWebView(WebView webView, String embedUrl) {
@@ -169,5 +181,33 @@ public class ListenActivity extends BaseActivity {
                 "utf-8",
                 null
         );
+    }
+
+    public void clickChoice1(View view) {
+        if (previewTracks.size() > 0) {
+            selectChoice(1, previewTracks.get(0).id);
+        }
+    }
+
+    public void clickChoice2(View view) {
+        if (previewTracks.size() > 1) {
+            selectChoice(2, previewTracks.get(1).id);
+        }
+    }
+
+    public void clickChoice3(View view) {
+        if (previewTracks.size() > 2) {
+            selectChoice(3, previewTracks.get(2).id);
+        }
+    }
+
+    public void clickPrevious(View view) {
+        finish();
+    }
+
+    public void clickHome(View view) {
+        Intent intent = new Intent(ListenActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 }

@@ -2,6 +2,7 @@ package com.example.what2play;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import androidx.room.Room;
 import com.example.what2play.database.AppDatabase;
 import com.example.what2play.database.entities.Genre;
 
-public class SliderActivity extends AppCompatActivity {
+public class SliderActivity extends BaseActivity {
 
     private TextView titleQuestion;
     private TextView minText;
@@ -101,32 +102,34 @@ public class SliderActivity extends AppCompatActivity {
             }
         });
 
-        buttonPrevious4.setOnClickListener(v -> finish());
-
-        buttonHome4.setOnClickListener(v -> {
-            Intent intent2 = new Intent(SliderActivity.this, MainActivity.class);
-            intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent2);
-        });
-
-        buttonValidate4.setOnClickListener(v -> {
-            Intent intent = new Intent(SliderActivity.this, SwipeActivity.class);
-
-            intent.putExtra("genre1_id", genre1Id);
-            intent.putExtra("genre2_id", genre2Id);
-
-            intent.putExtra("genre1_name", genre1Name);
-            intent.putExtra("genre2_name", genre2Name);
-
-            intent.putExtra("genre1_weight", weight1);
-            intent.putExtra("genre2_weight", weight2);
-
-            startActivity(intent);
-        });
     }
 
     private void updateWeightsFromSeekBar(int progress) {
         weight2 = progress;
         weight1 = 6 - progress;
+    }
+    public void clickPrevious4(View view) {
+        finish();
+    }
+
+    public void clickHome4(View view) {
+        Intent intent = new Intent(SliderActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    public void clickValidate4(View view) {
+        Intent intent = new Intent(SliderActivity.this, SwipeActivity.class);
+
+        intent.putExtra("genre1_id", genre1Id);
+        intent.putExtra("genre2_id", genre2Id);
+
+        intent.putExtra("genre1_name", genre1Name);
+        intent.putExtra("genre2_name", genre2Name);
+
+        intent.putExtra("genre1_weight", weight1);
+        intent.putExtra("genre2_weight", weight2);
+
+        startActivity(intent);
     }
 }

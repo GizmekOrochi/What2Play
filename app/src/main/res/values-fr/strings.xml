@@ -30,6 +30,13 @@
     <string name="electronicimagedescription">Image Musique Électronique</string>
     <string name="play_on_spotify">Lancer sur Spotify</string>
     <string name="share">Partager</string>
-    <string name="spinnerQuestionTitle">Clique pour choisir un mood</string>
-    <string name="spinnerCouple">[couple]</string>
+    <string name="spinnerQuestionTitle">Cliquez et choisissez une ambiance</string>
+    <string name="emoji_description">Appuyez sur les emojis selon votre ordre de préférence</string>
+    <string name="choose_preview_n_1">Choisir l\'extrait 1</string>
+    <string name="choose_preview_n_2">Choisir l\'extrait 2</string>
+    <string name="choose_preview_n_3">Choisir l\'extrait 3</string>
+    <string name="insert_question_title">INSERER LE TITRE DE LA QUESTION</string>
+    <string name="artist_template">[Artiste]</string>
+    <string name="swipe_activity_description">" Glissez vers la gauche si vous n'aimez pas cet artiste\n Glissez vers la droite si vous aimez cet artiste"</string>
+    <string name="swipe_activity_title">Choisissez vos artistes préférés</string>
 </resources>

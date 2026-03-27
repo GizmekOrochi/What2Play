@@ -38,5 +38,20 @@
     <string name="play_on_spotify">Play on Spotify</string>
     <string name="share">Share</string>
     <string name="spinnerQuestionTitle">Click and choose a mood</string>
-    <string name="spinnerCouple">[couple]</string>
+    <string name="spinnerCouple" translatable="false">[couple]</string>
+    <string name="boom_bap_emoji" translatable="false">🎤</string>
+    <string name="cloud_rap_emoji" translatable="false">🌫️</string>
+    <string name="empty_rank_chip_emoji" translatable="false">◌</string>
+    <string name="trap_emoji" translatable="false">💥</string>
+    <string name="west_coast_emoji" translatable="false">🌴</string>
+    <string name="emoji_description">Tap the emojis in order of preference</string>
+    <string name="choose_preview_n_1">Choose Preview 1</string>
+    <string name="choose_preview_n_2">Choose Preview 2</string>
+    <string name="choose_preview_n_3">Choose Preview 3</string>
+    <string name="maximum" translatable="false">Maximum</string>
+    <string name="minimum" translatable="false">Minimum</string>
+    <string name="insert_question_title">INSERT QUESTION TITLE</string>
+    <string name="artist_template">[Artist]</string>
+    <string name="swipe_activity_description">Swipe to the left if you don\'t like this artist  \nSwipe to the right if you like this artist</string>
+    <string name="swipe_activity_title">Choose your favorite artists</string>
 </resources>

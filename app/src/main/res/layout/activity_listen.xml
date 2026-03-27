@@ -25,19 +25,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
+        android:onClick="clickHome"
         android:text="@string/home_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonValidate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/validate_buttons"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonPrevious"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonHome" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -89,7 +82,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#95040E"
-                    android:text="Choose Preview n°1"
+                    android:onClick="clickChoice1"
+                    android:text="@string/choose_preview_n_1"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -116,7 +110,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#94020C"
-                    android:text="Choose Preview n°2"
+                    android:onClick="clickChoice2"
+                    android:text="@string/choose_preview_n_2"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -143,7 +138,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="#95040E"
-                    android:text="Choose Preview n°3"
+                    android:onClick="clickChoice3"
+                    android:text="@string/choose_preview_n_3"
                     android:textAlignment="center" />
 
             </LinearLayout>
@@ -155,6 +151,7 @@
         android:id="@+id/buttonPrevious"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="clickPrevious"
         android:text="@string/previous_buttons"
         app:layout_constraintBottom_toBottomOf="@+id/buttonHome"
         app:layout_constraintEnd_toStartOf="@+id/buttonHome"
