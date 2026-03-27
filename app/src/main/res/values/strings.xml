@@ -37,4 +37,6 @@
     <string name="electronic_instrumental_description" translatable="false">House, EDM, Lo-Fi, Synthwave</string>
     <string name="play_on_spotify">Play on Spotify</string>
     <string name="share">Share</string>
+    <string name="spinnerQuestionTitle">Click and choose a mood</string>
+    <string name="spinnerCouple">[couple]</string>
 </resources>

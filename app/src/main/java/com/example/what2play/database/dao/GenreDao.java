@@ -27,6 +27,9 @@ public interface GenreDao {
     @Query("SELECT * FROM genres WHERE name = :genreName LIMIT 1")
     Genre getByName(String genreName);
 
+    @Query("SELECT * FROM genres WHERE name IN ('Boom Bap', 'West Coast', 'Trap', 'Cloud Rap') ORDER BY CASE name WHEN 'Boom Bap' THEN 1 WHEN 'West Coast' THEN 2 WHEN 'Trap' THEN 3 WHEN 'Cloud Rap' THEN 4 END")
+    List<Genre> getRapGenresForEmojiQuestion();
+
     @Query("DELETE FROM genres")
     void clear();
 }
