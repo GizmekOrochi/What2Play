@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
@@ -96,7 +95,6 @@ public class SwipeActivity extends BaseActivity {
         genre2Weight = intent.getIntExtra("genre2_weight", 3);
 
         if (genre1Id == -1 || genre2Id == -1) {
-            Toast.makeText(this, "Invalid genre IDs", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -177,7 +175,7 @@ public class SwipeActivity extends BaseActivity {
             }
 
             if (currentArtistIndex >= artists.size()) {
-                artistNameText.setText("Finished");
+                artistNameText.setText(R.string.finished);
                 artistProgress.setProgress(artists.size());
                 buttonValidate.setEnabled(true);
                 buttonValidate.setAlpha(1f);
@@ -219,7 +217,6 @@ public class SwipeActivity extends BaseActivity {
 
         addAcceptedArtist(currentArtist, reactionTimeMs);
 
-        Toast.makeText(this, currentArtist + " accepted", Toast.LENGTH_SHORT).show();
 
         currentArtistIndex++;
         displayCurrentArtist();
@@ -230,7 +227,6 @@ public class SwipeActivity extends BaseActivity {
 
             String currentArtist = artists.get(currentArtistIndex);
 
-            Toast.makeText(this, currentArtist + " rejected", Toast.LENGTH_SHORT).show();
 
             currentArtistIndex++;
             displayCurrentArtist();
@@ -238,7 +234,6 @@ public class SwipeActivity extends BaseActivity {
 
     private void validateChoice() {
         if (currentArtistIndex < artists.size()) {
-            Toast.makeText(this, "Finish all artists first", Toast.LENGTH_SHORT).show();
             return;
         }
 

@@ -18,7 +18,7 @@
     <string name="artist_name">Nom de l\'Artiste</string>
     <string name="home_button">Menu</string>
     <string name="previous_buttons">Précédent</string>
-    <string name="listen_question_description">Écoutez les 3 extraits\nEt Choisissez celui que vous aimez le plus.</string>
+    <string name="listen_question_description">Écoutez les 3 extraits Et choisissez celui que vous aimez le plus.</string>
     <string name="validate_buttons">Valider</string>
     <string name="next">Suivant</string>
     <string name="previous">Précédent</string>
@@ -39,4 +39,6 @@
     <string name="artist_template">[Artiste]</string>
     <string name="swipe_activity_description">" Glissez vers la gauche si vous n'aimez pas cet artiste\n Glissez vers la droite si vous aimez cet artiste"</string>
     <string name="swipe_activity_title">Choisissez vos artistes préférés</string>
+    <string name="slider_question_title">Choisissez votre mix parmi les deux genres</string>
+    <string name="finished">Terminé</string>
 </resources>
