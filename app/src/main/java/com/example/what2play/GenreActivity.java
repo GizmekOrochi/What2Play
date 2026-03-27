@@ -3,6 +3,7 @@ package com.example.what2play;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -12,7 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class GenreActivity extends AppCompatActivity {
+public class GenreActivity extends BaseActivity {
     private CardView card1, card2, card3;
     private Button buttonPrevious3, buttonHome3, buttonValidate3;
 
@@ -21,7 +22,7 @@ public class GenreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_genrequestion);
+        setContentView(R.layout.activity_genre);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,37 +43,6 @@ public class GenreActivity extends AppCompatActivity {
         card2.setOnClickListener(v -> selectCategory(card2, "live"));
         card3.setOnClickListener(v -> selectCategory(card3, "electro"));
 
-        buttonValidate3.setOnClickListener(v -> {
-            if (selectedCategory == null) {
-                return;
-            }
-
-            switch (selectedCategory) {
-                case "urban":
-                    startActivity(new Intent(GenreActivity.this, EmojiActivity.class));
-                    break;
-
-                case "live":
-                    Intent intent = new Intent(GenreActivity.this, SpinnerActivity.class);
-                    intent.putExtra("spinner_mode", "live");
-                    startActivity(intent);
-                    break;
-
-                case "electro":
-                    Intent intent2 = new Intent(GenreActivity.this, SpinnerActivity.class);
-                    intent2.putExtra("spinner_mode", "electro");
-                    startActivity(intent2);
-                    break;
-            }
-        });
-
-        buttonPrevious3.setOnClickListener(v -> finish());
-
-        buttonHome3.setOnClickListener(v -> {
-            Intent intent = new Intent(GenreActivity.this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(intent);
-        });
     }
 
     private void selectCategory(CardView selectedCard, String category) {
@@ -90,5 +60,33 @@ public class GenreActivity extends AppCompatActivity {
         // Activer le bouton Validate
         buttonValidate3.setEnabled(true);
         buttonValidate3.setAlpha(1.0f);
+    }
+
+    public void clickPrevious3(View view) {
+        finish();
+    }
+
+    public void clickHome3(View view) {
+        Intent intent = new Intent(GenreActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+    }
+
+    public void clickValidate3(View view) {
+        if (selectedCategory == null) {
+            return;
+        }
+
+        if (selectedCategory.equals("urban")) {
+            startActivity(new Intent(GenreActivity.this, EmojiActivity.class));
+        } else if (selectedCategory.equals("live")) {
+            Intent intent = new Intent(GenreActivity.this, SpinnerActivity.class);
+            intent.putExtra("spinner_mode", "live");
+            startActivity(intent);
+        } else if (selectedCategory.equals("electro")) {
+            Intent intent = new Intent(GenreActivity.this, SpinnerActivity.class);
+            intent.putExtra("spinner_mode", "electro");
+            startActivity(intent);
+        }
     }
 }

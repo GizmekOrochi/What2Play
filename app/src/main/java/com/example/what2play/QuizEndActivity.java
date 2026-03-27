@@ -5,9 +5,14 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
 import com.example.what2play.database.AppDatabase;
@@ -24,26 +29,28 @@ public class QuizEndActivity extends BaseActivity {
 
     private Track track;
     private Artist artist;
+    private TextView titleView, artistView;
+
+    private Button playButton, shareButton, menuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_quiz_end);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         Log.d(TAG, "Activity started");
 
-        TextView titleView = findViewById(R.id.songTitle);
-        TextView artistView = findViewById(R.id.songArtist);
-        Button playButton = findViewById(R.id.btnPlaySpotify);
-        Button shareButton = findViewById(R.id.btnShare);
-        Button menuButton = findViewById(R.id.btnMenu);
-
-        menuButton.setOnClickListener(v -> {
-            Log.d(TAG, "Returning to MainActivity");
-
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
+        titleView = findViewById(R.id.songTitle);
+        artistView = findViewById(R.id.songArtist);
+        playButton = findViewById(R.id.btnPlaySpotify);
+        shareButton = findViewById(R.id.btnShare);
+        menuButton = findViewById(R.id.btnMenu);
 
         //Initialize the  database
         AppDatabase db = Room.databaseBuilder(
@@ -82,36 +89,50 @@ public class QuizEndActivity extends BaseActivity {
         titleView.setText(track.name);
         artistView.setText(artist != null ? artist.name : "");
 
-        //Spotify button
-        playButton.setOnClickListener(v -> {
-            String url = "https://open.spotify.com/track/" + track.link;
-            Log.d(TAG, "Opening Spotify: " + url);
+    }
 
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-        });
+    public void clickMenu(View view) {
+        Log.d(TAG, "Returning to MainActivity");
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 
+    public void clickPlaySpotify(View view) {
+        if (track == null) {
+            Log.e(TAG, "Track is null");
+            return;
+        }
 
-        shareButton.setOnClickListener(v -> {
-            SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
-            String lang = prefs.getString("lang", "en");
-            String spotifyUrl = "https://open.spotify.com/track/" + track.link;
-            String message;
+        String url = "https://open.spotify.com/track/" + track.link;
+        Log.d(TAG, "Opening Spotify: " + url);
 
-            //Message depending on the langue
-            if ("fr".equals(lang)) {
-                message = "J'ai trouvé une musique sympa : " + track.name + "\n" + spotifyUrl;
-            } else {
-                message = "Hey, I found this song: " + track.name + "\n" + spotifyUrl;
-            }
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+    }
 
-            Log.d(TAG, "Sharing message: " + message);
+    public void clickShare(View view) {
+        if (track == null) {
+            Log.e(TAG, "Track is null");
+            return;
+        }
 
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+        SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
+        String lang = prefs.getString("lang", "en");
+        String spotifyUrl = "https://open.spotify.com/track/" + track.link;
+        String message;
 
-            startActivity(Intent.createChooser(sendIntent, "Share"));
-        });
+        if ("fr".equals(lang)) {
+            message = "J'ai trouvé une musique sympa : " + track.name + "\n" + spotifyUrl;
+        } else {
+            message = "Hey, I found this song: " + track.name + "\n" + spotifyUrl;
+        }
+
+        Log.d(TAG, "Sharing message: " + message);
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.setType("text/plain");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+        startActivity(Intent.createChooser(sendIntent, "Share"));
     }
 }
