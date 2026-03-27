@@ -82,17 +82,17 @@ public class MusicData {
     public static GenreData[] GENRES = {
             new GenreData("Electro"),
             new GenreData("Synthwave"),
-            new GenreData("Metal"),
-            new GenreData("Rock"),
-            new GenreData("Boom Bap"),
-            new GenreData("West Coast"),
-            new GenreData("Trap"),
-            new GenreData("Cloud Rap"),
             new GenreData("French house"),
             new GenreData("EDM"),
             new GenreData("Lo-Fi"),
+            new GenreData("Metal"),
+            new GenreData("Rock"),
             new GenreData("Jazz"),
-            new GenreData("Blues")
+            new GenreData("Blues"),
+            new GenreData("Boom Bap"),
+            new GenreData("West Coast"),
+            new GenreData("Trap"),
+            new GenreData("Cloud Rap")
     };
 
     public static ArtistData[] ARTISTS = {

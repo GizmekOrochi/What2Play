@@ -51,15 +51,16 @@ public class EmojiActivity extends AppCompatActivity {
         buttonValidate2 = findViewById(R.id.buttonValidate2);
 
 
-        AppDatabase db = Room.databaseBuilder(
+        db = Room.databaseBuilder(
                 getApplicationContext(),
                 AppDatabase.class,
                 "what2play-db"
         ).allowMainThreadQueries().build();
 
-        rapGenres = new ArrayList<>(db.genreDao().getGenresForEmojiQuestion());
+        rapGenres = new ArrayList<>(db.genreDao().getRapGenresForEmojiQuestion());
 
-        if (rapGenres == null || rapGenres.size() != 4) {
+        if (rapGenres.size() != 4) {
+            finish();
             return;
         }
 
@@ -85,34 +86,22 @@ public class EmojiActivity extends AppCompatActivity {
 
             int genre1Id = ranking.get(0);
             int genre2Id = ranking.get(1);
-            /*Genre genre1 = db.genreDao().getByName(top1);
-            Genre genre2 = db.genreDao().getByName(top2);
-
-
-            if (genre1 == null || genre2 == null) {
-                Toast.makeText(this, "Genre not found in database", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
             // Ici tu envoies les 2 genres principaux à l'activité suivante
             // Remplace NextActivity par la vraie activité suivante
             Intent intent = new Intent(EmojiActivity.this, SliderActivity.class);
-            intent.putExtra("genre1_id", genre1.id);
-            intent.putExtra("genre2_id", genre2.id);
+            intent.putExtra("genre1_id", genre1Id);
+            intent.putExtra("genre2_id", genre2Id);
             startActivity(intent);
-            */
         });
 
-        updateRankingDisplay();
         setupGenreChipsFromDb();
+        updateRankingDisplay();
         updateChoiceChipStyles();
         updateValidateButtonState();
     }
 
 
-
-    private void setupButtons() {
-    }
 
     private void toggleStyle(int genreId) {
         if (ranking.contains(genreId)) {
@@ -153,7 +142,7 @@ public class EmojiActivity extends AppCompatActivity {
         updateChipStyle(chipBoomBap, ranking.contains((int) chipBoomBap.getTag()));
         updateChipStyle(chipWestCoast, ranking.contains((int) chipWestCoast.getTag()));
         updateChipStyle(chipTrap, ranking.contains((int) chipTrap.getTag()));
-        updateChipStyle(chipCloudRap, ranking.contains((int) chipCloudRap.getTag()));;
+        updateChipStyle(chipCloudRap, ranking.contains((int) chipCloudRap.getTag()));
     }
 
     private void updateChipStyle(Chip chip, boolean selected) {

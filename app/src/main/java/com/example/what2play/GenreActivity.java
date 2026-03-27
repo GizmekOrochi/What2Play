@@ -53,11 +53,15 @@ public class GenreActivity extends AppCompatActivity {
                     break;
 
                 case "live":
-                    //Toast.makeText(this, "Live activity not created yet", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(GenreActivity.this, SpinnerActivity.class);
+                    intent.putExtra("spinner_mode", "live");
+                    startActivity(intent);
                     break;
 
                 case "electro":
-                    //Toast.makeText(this, "Electro activity not created yet", Toast.LENGTH_SHORT).show();
+                    Intent intent2 = new Intent(GenreActivity.this, SpinnerActivity.class);
+                    intent2.putExtra("spinner_mode", "electro");
+                    startActivity(intent2);
                     break;
             }
         });

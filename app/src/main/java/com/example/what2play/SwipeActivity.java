@@ -11,13 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
+import com.example.what2play.database.AppDatabase;
+import com.example.what2play.database.entities.Artist;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 
 public class SwipeActivity extends AppCompatActivity {
 
@@ -44,6 +46,10 @@ public class SwipeActivity extends AppCompatActivity {
     private String genre2Name;
     private int genre2Weight;
 
+    private int genre1Id;
+    private int genre2Id;
+
+    private AppDatabase db;
     private final ArrayList<String> artists = new ArrayList<>();
     private final ArrayList<AcceptedArtist> acceptedArtists = new ArrayList<>();
     private final ArrayList<String> rejectedArtists = new ArrayList<>();
@@ -56,8 +62,16 @@ public class SwipeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_swipe);
 
         bindViews();
+
+        db = Room.databaseBuilder(
+                getApplicationContext(),
+                AppDatabase.class,
+                "what2play-db"
+        ).allowMainThreadQueries().build();
+
         readIncomingGenres();
         setupArtistList();
+
         setupButtons();
         setupSwipeDetection();
 
@@ -85,113 +99,57 @@ public class SwipeActivity extends AppCompatActivity {
     private void readIncomingGenres() {
         Intent intent = getIntent();
 
+        genre1Id = intent.getIntExtra("genre1_id", -1);
+        genre2Id = intent.getIntExtra("genre2_id", -1);
+
         genre1Name = intent.getStringExtra("genre1_name");
         genre1Weight = intent.getIntExtra("genre1_weight", 3);
 
         genre2Name = intent.getStringExtra("genre2_name");
         genre2Weight = intent.getIntExtra("genre2_weight", 3);
 
-        if (genre1Name == null) genre1Name = "Boom Bap";
-        if (genre2Name == null) genre2Name = "Cloud Rap";
+        if (genre1Id == -1 || genre2Id == -1) {
+            Toast.makeText(this, "Invalid genre IDs", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        if (genre1Name == null) genre1Name = "Unknown";
+        if (genre2Name == null) genre2Name = "Unknown";
 
         titleText.setText(genre1Name + " / " + genre2Name);
     }
 
     private void setupArtistList() {
-        HashMap<String, ArrayList<String>> catalog = buildArtistCatalog();
+        artists.clear();
 
-        // Répartition simple sur 6 artistes
         int totalWeight = genre1Weight + genre2Weight;
         if (totalWeight <= 0) totalWeight = 1;
 
         int countGenre1 = Math.round((6f * genre1Weight) / totalWeight);
         int countGenre2 = 6 - countGenre1;
 
-        // Sécurité pour éviter 0/6 extrêmes trop absurdes
-        if (countGenre1 == 0) {
-            countGenre1 = 1;
-            countGenre2 = 5;
-        }
-        if (countGenre2 == 0) {
-            countGenre2 = 1;
-            countGenre1 = 5;
-        }
+        addArtistsFromGenreId(artists, genre1Id, countGenre1);
+        addArtistsFromGenreId(artists, genre2Id, countGenre2);
 
-        addArtistsFromGenre(artists, catalog, genre1Name, countGenre1);
-        addArtistsFromGenre(artists, catalog, genre2Name, countGenre2);
-
-        // Complète si jamais doublons ou manque
-        if (artists.size() < 6) {
-            addArtistsFromGenre(artists, catalog, genre1Name, 6 - artists.size());
-        }
-        if (artists.size() < 6) {
-            addArtistsFromGenre(artists, catalog, genre2Name, 6 - artists.size());
-        }
-
-        // Dernière sécurité
         while (artists.size() > 6) {
             artists.remove(artists.size() - 1);
         }
     }
 
-    private HashMap<String, ArrayList<String>> buildArtistCatalog() {
-        HashMap<String, ArrayList<String>> catalog = new HashMap<>();
+    private void addArtistsFromGenreId(ArrayList<String> target, int genreId, int count) {
+        if (count <= 0) return;
 
-        ArrayList<String> boomBap = new ArrayList<>();
-        boomBap.add("IAM");
-        boomBap.add("Wu-Tang Clan");
-        boomBap.add("Nekfeu");
-        boomBap.add("Oxmo Puccino");
-        boomBap.add("Mobb Deep");
-        boomBap.add("The Notorious B.I.G.");
-        catalog.put("Boom Bap", boomBap);
+        ArrayList<Artist> source =
+                new ArrayList<>(db.genreArtistDao().getArtistsForGenre(genreId));
 
-        ArrayList<String> westCoast = new ArrayList<>();
-        westCoast.add("Dr. Dre");
-        westCoast.add("Snoop Dogg");
-        westCoast.add("Kurupt");
-        westCoast.add("Ice Cube");
-        westCoast.add("2Pac");
-        westCoast.add("Kendrick Lamar");
-        catalog.put("West Coast", westCoast);
-
-        ArrayList<String> trap = new ArrayList<>();
-        trap.add("Migos");
-        trap.add("Niska");
-        trap.add("Future");
-        trap.add("Vald");
-        trap.add("Jeezy");
-        trap.add("Kaaris");
-        catalog.put("Trap", trap);
-
-        ArrayList<String> cloudRap = new ArrayList<>();
-        cloudRap.add("PNL");
-        cloudRap.add("Werenoi");
-        cloudRap.add("A$AP Rocky");
-        cloudRap.add("Travis Scott");
-        cloudRap.add("Josman");
-        cloudRap.add("Yung Lean");
-        catalog.put("Cloud Rap", cloudRap);
-
-        return catalog;
-    }
-
-    private void addArtistsFromGenre(ArrayList<String> target,
-                                     HashMap<String, ArrayList<String>> catalog,
-                                     String genre,
-                                     int count) {
-        ArrayList<String> source = catalog.get(genre);
-        if (source == null) return;
-
-        for (String artist : source) {
-            if (!target.contains(artist)) {
-                target.add(artist);
-                if (count > 0) {
-                    count--;
-                }
-                if (count == 0) {
-                    return;
-                }
+        for (Artist artist : source) {
+            if (!target.contains(artist.name)) {
+                target.add(artist.name);
+                count--;
+            }
+            if (count == 0) {
+                return;
             }
         }
     }
