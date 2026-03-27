@@ -2,6 +2,7 @@ package com.example.what2play;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -31,16 +32,19 @@ public class MainActivity extends BaseActivity {
         startButton = findViewById(R.id.startButton);
         addButton = findViewById(R.id.addButton);
         settingsButton = findViewById(R.id.settingsButton);
+    }
+    public void clickStart(View view) {
+        Intent intent = new Intent(MainActivity.this, GenreActivity.class);
+        startActivity(intent);
+    }
 
-        startButton.setOnClickListener(v ->
-                startActivity(new Intent(this, GenreActivity.class)
-                ));
+    public void clickAdd(View view) {
+        Intent intent = new Intent(MainActivity.this, AddSongActivity.class);
+        startActivity(intent);
+    }
 
-        addButton.setOnClickListener(v ->
-                startActivity(new Intent(this, AddSongActivity.class)));
-
-        settingsButton.setOnClickListener(v ->
-                startActivity(new Intent(this, SettingsActivity.class)));
-
+    public void clickSettings(View view) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

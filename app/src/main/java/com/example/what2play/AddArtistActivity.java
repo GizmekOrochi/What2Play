@@ -3,6 +3,7 @@ package com.example.what2play;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -58,21 +59,6 @@ public class AddArtistActivity extends BaseActivity {
 
         //load genres into spinner
         loadGenres();
-
-        //return to the main menu
-        backButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-
-        //add artist button
-        addButton.setOnClickListener(v -> addArtist());
-
-        //go to next screen
-        goToSongButton.setOnClickListener(v -> {
-            Log.d(TAG, "Going to AddSongActivity");
-            startActivity(new Intent(this, AddSongActivity.class));
-        });
     }
 
     //load genres and display them in spinner
@@ -142,5 +128,19 @@ public class AddArtistActivity extends BaseActivity {
         Toast.makeText(this, "Artist added!", Toast.LENGTH_SHORT).show();
 
         artistInput.setText("");
+    }
+
+    public void clickBackAddArtist(View view) {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    public void clickAddArtist(View view) {
+        addArtist();
+    }
+
+    public void clickGoToSong(View view) {
+        Log.d(TAG, "Going to AddSongActivity");
+        startActivity(new Intent(this, AddSongActivity.class));
     }
 }
