@@ -6,7 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.*;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.room.Room;
 
 import com.example.what2play.database.AppDatabase;
@@ -32,7 +36,13 @@ public class AddSongActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_song);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         // init UI
         genreSpinner = findViewById(R.id.spinner);
@@ -61,21 +71,6 @@ public class AddSongActivity extends BaseActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        //return to menu
-        backButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        });
-
-        //add song button
-        addButton.setOnClickListener(v -> addSong());
-
-        //Going to AddSongActivity activity
-        goToArtistButton.setOnClickListener(v -> {
-            Log.d(TAG, "Navigating to AddArtistActivity");
-            startActivity(new Intent(this, AddArtistActivity.class));
         });
     }
 
@@ -150,5 +145,19 @@ public class AddSongActivity extends BaseActivity {
         //clear inputs
         songNameInput.setText("");
         linkInput.setText("");
+    }
+
+    public void clickBackAddSong(View view) {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    public void clickAddSong(View view) {
+        addSong();
+    }
+
+    public void clickGoToArtist(View view) {
+        Log.d(TAG, "Navigating to AddArtistActivity");
+        startActivity(new Intent(this, AddArtistActivity.class));
     }
 }

@@ -1,11 +1,27 @@
 package com.example.what2play;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.room.Room;
+
+import com.example.what2play.database.AppDatabase;
+import com.example.what2play.database.entities.Artist;
+import com.example.what2play.database.entities.Track;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class ListenActivity extends BaseActivity {
@@ -13,15 +29,26 @@ public class ListenActivity extends BaseActivity {
     private WebView webView1, webView2, webView3;
     private Button buttonChoice1, buttonChoice2, buttonChoice3;
 
+    private Button buttonHome, buttonPrevious;
 
+
+    private AppDatabase db;
+
+    private final ArrayList<Track> previewTracks = new ArrayList<>();
     private int selectedChoice = -1;
+    private int selectedTrackId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_listen);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        // Récupération des vues
         webView1 = findViewById(R.id.webView1);
         webView2 = findViewById(R.id.webView2);
         webView3 = findViewById(R.id.webView3);
@@ -30,25 +57,48 @@ public class ListenActivity extends BaseActivity {
         buttonChoice2 = findViewById(R.id.buttonChoice2);
         buttonChoice3 = findViewById(R.id.buttonChoice3);
 
-        // Exemple : on charge avec uniquement les IDs Spotify
-        setupSpotifyWebViewFromTrackId(webView1, "75xky3ExE2E7u6WDqCR35g");
-        setupSpotifyWebViewFromTrackId(webView2, "0tbJlonCpRcSkAwPiOBG6g");
-        setupSpotifyWebViewFromTrackId(webView3, "5MOwFMdgsaysrVPcE7Flnj");
+        buttonPrevious = findViewById(R.id.buttonPrevious);
+        buttonHome = findViewById(R.id.buttonHome);
 
-        // Boutons
-        buttonChoice1.setOnClickListener(v -> selectChoice(1));
-        buttonChoice2.setOnClickListener(v -> selectChoice(2));
-        buttonChoice3.setOnClickListener(v -> selectChoice(3));
+        db = Room.databaseBuilder(
+                getApplicationContext(),
+                AppDatabase.class,
+                "what2play-db"
+        ).allowMainThreadQueries().build();
+
+        ArrayList<String> selectedArtists = getIntent().getStringArrayListExtra("selected_artists");
+
+        if (selectedArtists == null || selectedArtists.isEmpty()) {
+            Toast.makeText(this, "No selected artists received", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        loadPreviewTracks(selectedArtists);
+
+        if (previewTracks.isEmpty()) {
+            Toast.makeText(this, "No tracks found for selected artists", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        bindPreviewSlot(0, webView1, buttonChoice1);
+        bindPreviewSlot(1, webView2, buttonChoice2);
+        bindPreviewSlot(2, webView3, buttonChoice3);
     }
 
-    private void selectChoice(int choice) {
+    private void selectChoice(int choice, int trackId) {
         selectedChoice = choice;
+        selectedTrackId = trackId;
 
         buttonChoice1.setText(choice == 1 ? "Selected" : "Choose Preview n°1");
         buttonChoice2.setText(choice == 2 ? "Selected" : "Choose Preview n°2");
         buttonChoice3.setText(choice == 3 ? "Selected" : "Choose Preview n°3");
 
         Toast.makeText(this, "Preview " + choice + " selected", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ListenActivity.this, QuizEndActivity.class);
+        intent.putExtra("trackId", selectedTrackId);
+        startActivity(intent);
     }
 
     private void setupSpotifyWebViewFromTrackId(WebView webView, String trackId) {
@@ -58,6 +108,46 @@ public class ListenActivity extends BaseActivity {
 
     private String buildSpotifyEmbedUrl(String trackId) {
         return "https://open.spotify.com/embed/track/" + trackId + "?theme=0";
+    }
+
+    private void loadPreviewTracks(ArrayList<String> selectedArtists) {
+        previewTracks.clear();
+        Random random = new Random();
+
+        for (String artistName : selectedArtists) {
+            Artist artist = db.artistDao().findByName(artistName);
+
+            if (artist == null) {
+                continue;
+            }
+
+            List<Track> tracksForArtist = db.trackArtistDao().getTracksForArtist(artist.id);
+
+            if (tracksForArtist == null || tracksForArtist.isEmpty()) {
+                continue;
+            }
+
+            Track randomTrack = tracksForArtist.get(random.nextInt(tracksForArtist.size()));
+            previewTracks.add(randomTrack);
+
+            if (previewTracks.size() == 3) {
+                return;
+            }
+        }
+    }
+    private void bindPreviewSlot(int index, WebView webView, Button button) {
+        if (index >= previewTracks.size()) {
+            webView.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
+            return;
+        }
+
+        Track track = previewTracks.get(index);
+
+        setupSpotifyWebViewFromTrackId(webView, track.link);
+        button.setText("Choose Preview n°" + (index + 1));
+        button.setVisibility(View.VISIBLE);
+        webView.setVisibility(View.VISIBLE);
     }
 
     private void setupSpotifyWebView(WebView webView, String embedUrl) {
@@ -91,5 +181,33 @@ public class ListenActivity extends BaseActivity {
                 "utf-8",
                 null
         );
+    }
+
+    public void clickChoice1(View view) {
+        if (previewTracks.size() > 0) {
+            selectChoice(1, previewTracks.get(0).id);
+        }
+    }
+
+    public void clickChoice2(View view) {
+        if (previewTracks.size() > 1) {
+            selectChoice(2, previewTracks.get(1).id);
+        }
+    }
+
+    public void clickChoice3(View view) {
+        if (previewTracks.size() > 2) {
+            selectChoice(3, previewTracks.get(2).id);
+        }
+    }
+
+    public void clickPrevious(View view) {
+        finish();
+    }
+
+    public void clickHome(View view) {
+        Intent intent = new Intent(ListenActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 }

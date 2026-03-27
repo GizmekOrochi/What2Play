@@ -20,8 +20,7 @@ import com.example.what2play.database.entities.Track;
 import com.example.what2play.database.entities.TrackArtist;
 
 @Database(
-        entities = {
-                Artist.class,
+        entities = {Artist.class,
                 Genre.class,
                 GenreArtist.class,
                 GenreMood.class,
